@@ -213,6 +213,7 @@ cd AgentRE-Bench
 # Create .env with your API key(s)
 cp .env.example .env
 # Edit .env — add at least one provider key
+# Optional: add Langfuse keys to enable task/LLM/tool tracing
 ```
 
 ### 2. Build Binaries
@@ -243,8 +244,11 @@ python run_benchmark.py --all
 # Different providers
 python run_benchmark.py --all --provider anthropic --model claude-opus-4-6
 python run_benchmark.py --all --provider openai --model gpt-4o
+python run_benchmark.py --all --provider openrouter --model openai/gpt-4o
 python run_benchmark.py --all --provider gemini --model gemini-2.0-flash
 python run_benchmark.py --all --provider deepseek --model deepseek-chat
+
+# OpenRouter note: requests include HTTP-Referer and X-Title headers automatically.
 
 # Custom output directory
 python run_benchmark.py --all --report results/opus_run1/
@@ -256,7 +260,7 @@ python run_benchmark.py --all --report results/opus_run1/
 |------|---------|-------------|
 | `--all` | | Run all 13 tasks |
 | `--task ID` | | Run a single task by ID |
-| `--provider` | `anthropic` | `anthropic`, `openai`, `gemini`, `deepseek` |
+| `--provider` | `anthropic` | `anthropic`, `openai`, `openrouter`, `gemini`, `deepseek` |
 | `--model` | per-provider | Model name |
 | `--api-key` | from .env | API key override |
 | `--report DIR` | `results/` | Output directory |
@@ -264,6 +268,19 @@ python run_benchmark.py --all --report results/opus_run1/
 | `--max-tokens` | `4096` | Max tokens per LLM response |
 | `--no-docker` | | Run tools via local subprocess |
 | `-v` | | Verbose: show agent reasoning + tool I/O live |
+
+### Optional: Langfuse Logging
+
+Langfuse logging is automatically enabled when both of these are present in `.env` or your environment:
+
+- `LANGFUSE_PUBLIC_KEY`
+- `LANGFUSE_SECRET_KEY`
+
+Optional:
+
+- `LANGFUSE_HOST` (default: `https://cloud.langfuse.com`)
+
+When enabled, the benchmark logs task-level traces plus model-call and tool-call spans, including prompts and tool I/O metadata.
 
 ## Output
 

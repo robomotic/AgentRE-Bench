@@ -1,12 +1,14 @@
 from .base import AgentProvider, ProviderResponse, ToolCall
 from .anthropic import AnthropicProvider
 from .openai_provider import OpenAIProvider
+from .openrouter import OpenRouterProvider
 from .gemini import GeminiProvider
 from .deepseek import DeepSeekProvider
 
 PROVIDER_MAP = {
     "anthropic": AnthropicProvider,
     "openai": OpenAIProvider,
+    "openrouter": OpenRouterProvider,
     "gemini": GeminiProvider,
     "deepseek": DeepSeekProvider,
 }

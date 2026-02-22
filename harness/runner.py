@@ -9,6 +9,7 @@ from typing import Any
 
 from .agent import AgentLoop
 from .config import BenchmarkConfig
+from .langfuse import create_langfuse_client
 from .metrics import (
     AggregateMetrics,
     TaskMetrics,
@@ -92,6 +93,7 @@ def build_system_prompt(task: TaskConfig, config: BenchmarkConfig) -> str:
 def run_single_task(
     task: TaskConfig,
     config: BenchmarkConfig,
+    langfuse_client=None,
 ) -> tuple[TaskMetrics, dict[str, Any]]:
     # Validate binary exists
     if not task.binary_path.exists():
@@ -110,6 +112,16 @@ def run_single_task(
     # Build system prompt
     system_prompt = build_system_prompt(task, config)
 
+    trace_id = None
+    if langfuse_client is not None:
+        trace_id = langfuse_client.create_task_trace(
+            task_id=task.task_id,
+            model=config.model,
+            provider=config.provider,
+            difficulty=task.difficulty,
+            metadata={"binary": task.binary_path.name},
+        )
+
     # Run agent loop
     agent_loop = AgentLoop(
         provider=provider,
@@ -119,8 +131,21 @@ def run_single_task(
         max_tool_calls=config.max_tool_calls,
         max_tokens=config.max_tokens,
         verbose=config.verbose,
+        langfuse=langfuse_client,
+        langfuse_trace_id=trace_id,
     )
-    agent_result = agent_loop.run()
+    try:
+        agent_result = agent_loop.run()
+    except Exception as e:
+        if langfuse_client is not None and trace_id:
+            langfuse_client.update_trace(
+                trace_id,
+                output={"error": str(e)},
+                metadata={"task_id": task.task_id},
+                level="ERROR",
+                status_message="task_failed",
+            )
+        raise
 
     # Save agent output
     config.agent_outputs_dir.mkdir(parents=True, exist_ok=True)
@@ -139,6 +164,25 @@ def run_single_task(
 
     # Collect metrics
     metrics = collect_task_metrics(task.task_id, agent_result, score_result)
+
+    if langfuse_client is not None and trace_id:
+        langfuse_client.update_trace(
+            trace_id,
+            output={
+                "final_answer": final_answer,
+                "score": score_result,
+            },
+            metadata={
+                "task_id": task.task_id,
+                "tool_call_count": agent_result.get("tool_call_count", 0),
+                "total_tokens": agent_result.get("total_tokens", 0),
+                "wall_time_seconds": agent_result.get("wall_time_seconds", 0),
+                "score": metrics.score,
+                "has_valid_answer": agent_result.get("has_valid_answer", False),
+            },
+            level="DEFAULT",
+            status_message="task_completed",
+        )
 
     # Save transcript
     config.transcripts_dir.mkdir(parents=True, exist_ok=True)
@@ -190,6 +234,13 @@ def run_benchmark(
 
     all_metrics: list[TaskMetrics] = []
     all_scores: list[dict] = []
+    langfuse_client = create_langfuse_client(
+        public_key=config.langfuse_public_key,
+        secret_key=config.langfuse_secret_key,
+        host=config.langfuse_host,
+    )
+    if config.langfuse_enabled:
+        print(f"  Langfuse: enabled ({config.langfuse_host})")
 
     for i, task in enumerate(tasks, 1):
         if config.verbose:
@@ -203,7 +254,7 @@ def run_benchmark(
             print(f"{label} ", end="", flush=True)
 
         try:
-            metrics, score_result = run_single_task(task, config)
+            metrics, score_result = run_single_task(task, config, langfuse_client=langfuse_client)
             all_metrics.append(metrics)
             all_scores.append(score_result)
 
@@ -223,6 +274,13 @@ def run_benchmark(
                 )
         except Exception as e:
             log.error("Task %s failed: %s", task.task_id, e, exc_info=True)
+            if config.langfuse_enabled:
+                langfuse_client.create_event(
+                    trace_id=None,
+                    name="task_failed_unhandled",
+                    output={"task_id": task.task_id, "error": str(e)},
+                    level="ERROR",
+                )
             if config.verbose:
                 print(f"\n  FAILED: {e}")
             else:

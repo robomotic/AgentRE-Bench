@@ -5,12 +5,14 @@ AgentRE-Bench — CLI entry point
 API keys are loaded from .env in the project root. Create one with:
     ANTHROPIC_API_KEY=sk-ant-...
     OPENAI_API_KEY=sk-...
+    OPENROUTER_API_KEY=sk-or-...
     GOOGLE_API_KEY=AI...
     DEEPSEEK_API_KEY=sk-...
 
 Then just pick a provider/model:
     python run_benchmark.py --all --provider anthropic --model claude-opus-4-6
     python run_benchmark.py --all --provider openai --model gpt-4o
+    python run_benchmark.py --all --provider openrouter --model openai/gpt-4o
     python run_benchmark.py --all --provider gemini --model gemini-2.0-flash
     python run_benchmark.py --all --provider deepseek --model deepseek-chat
     python run_benchmark.py --task level1_TCPServer --model claude-opus-4-6
@@ -47,7 +49,7 @@ def main():
         "--provider",
         type=str,
         default="anthropic",
-        choices=["anthropic", "openai", "gemini", "deepseek"],
+        choices=["anthropic", "openai", "openrouter", "gemini", "deepseek"],
         help="LLM provider (default: anthropic)",
     )
     parser.add_argument(
@@ -100,6 +102,7 @@ def main():
     model_defaults = {
         "anthropic": "claude-opus-4-6",
         "openai": "gpt-4o",
+        "openrouter": "openai/gpt-4o",
         "gemini": "gemini-2.0-flash",
         "deepseek": "deepseek-chat",
     }

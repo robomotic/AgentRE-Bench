@@ -7,6 +7,7 @@ from pathlib import Path
 ENV_KEY_MAP = {
     "anthropic": "ANTHROPIC_API_KEY",
     "openai": "OPENAI_API_KEY",
+    "openrouter": "OPENROUTER_API_KEY",
     "gemini": "GOOGLE_API_KEY",
     "deepseek": "DEEPSEEK_API_KEY",
 }
@@ -61,6 +62,10 @@ class BenchmarkConfig:
 
     results_dir: Path = field(default=None)
     verbose: bool = False
+    langfuse_public_key: str = ""
+    langfuse_secret_key: str = ""
+    langfuse_host: str = "https://cloud.langfuse.com"
+    langfuse_enabled: bool = False
 
     def __post_init__(self):
         self.project_root = Path(self.project_root).resolve()
@@ -76,6 +81,16 @@ class BenchmarkConfig:
 
         # Load .env file so API keys are available via env vars
         _load_dotenv(self.project_root)
+
+        if not self.langfuse_public_key:
+            self.langfuse_public_key = os.environ.get("LANGFUSE_PUBLIC_KEY", "")
+        if not self.langfuse_secret_key:
+            self.langfuse_secret_key = os.environ.get("LANGFUSE_SECRET_KEY", "")
+        env_host = os.environ.get("LANGFUSE_HOST", "").strip()
+        if env_host:
+            self.langfuse_host = env_host
+
+        self.langfuse_enabled = bool(self.langfuse_public_key and self.langfuse_secret_key)
 
     def resolve_api_key(self) -> str:
         # 1. Explicit --api-key flag (highest priority)

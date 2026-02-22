@@ -22,6 +22,12 @@ class OpenAIProvider(AgentProvider):
         """Parameter name for max output tokens. Override for API compatibility."""
         return "max_completion_tokens"
 
+    def _request_headers(self) -> dict[str, str]:
+        return {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.api_key}",
+        }
+
     def create_message(
         self,
         system: str,
@@ -42,10 +48,7 @@ class OpenAIProvider(AgentProvider):
             self._token_param(): max_tokens,
         }
 
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.api_key}",
-        }
+        headers = self._request_headers()
 
         data = json.dumps(body).encode("utf-8")
         url = f"{self.base_url}/chat/completions"

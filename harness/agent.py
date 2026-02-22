@@ -5,6 +5,7 @@ import logging
 import time
 from typing import Any
 
+from .langfuse import NoopLangfuseClient
 from .providers.base import AgentProvider, ProviderResponse
 from .tools import ToolExecutor, get_tool_schemas
 
@@ -21,6 +22,8 @@ class AgentLoop:
         max_tool_calls: int = 25,
         max_tokens: int = 4096,
         verbose: bool = False,
+        langfuse: Any = None,
+        langfuse_trace_id: str | None = None,
     ):
         self.provider = provider
         self.tool_executor = tool_executor
@@ -29,6 +32,8 @@ class AgentLoop:
         self.max_tool_calls = max_tool_calls
         self.max_tokens = max_tokens
         self.verbose = verbose
+        self.langfuse = langfuse or NoopLangfuseClient()
+        self.langfuse_trace_id = langfuse_trace_id
 
         self.messages: list[dict] = []
         self.tool_call_count = 0
@@ -66,6 +71,18 @@ class AgentLoop:
         max_steps_hit = False
 
         while self.tool_call_count < self.max_tool_calls:
+            generation_id = self.langfuse.create_generation(
+                trace_id=self.langfuse_trace_id,
+                name="llm.create_message",
+                model=getattr(self.provider, "model", "unknown"),
+                input={
+                    "system": self.system_prompt,
+                    "messages": self.messages,
+                    "tools": tools,
+                    "max_tokens": self.max_tokens,
+                },
+                metadata={"task_id": self.task_id, "tool_call_count": self.tool_call_count},
+            )
             try:
                 response = self.provider.create_message(
                     system=self.system_prompt,
@@ -74,9 +91,48 @@ class AgentLoop:
                     max_tokens=self.max_tokens,
                 )
             except Exception as e:
+                self.langfuse.end_generation(
+                    trace_id=self.langfuse_trace_id,
+                    generation_id=generation_id,
+                    output={"error": str(e)},
+                    level="ERROR",
+                    status_message="provider_error",
+                )
+                self.langfuse.create_event(
+                    trace_id=self.langfuse_trace_id,
+                    name="provider_error",
+                    output={"error": str(e)},
+                    metadata={"task_id": self.task_id},
+                    level="ERROR",
+                    parent_observation_id=generation_id,
+                )
                 log.error("[%s] Provider error: %s", self.task_id, e)
                 self._vprint(f"\n  !! Provider error: {e}")
                 break
+
+            self.langfuse.end_generation(
+                trace_id=self.langfuse_trace_id,
+                generation_id=generation_id,
+                output={
+                    "stop_reason": response.stop_reason,
+                    "text_content": response.text_content,
+                    "tool_calls": [
+                        {"id": tc.id, "name": tc.name, "input": tc.input}
+                        for tc in (response.tool_calls or [])
+                    ],
+                },
+                usage={
+                    "input": response.input_tokens,
+                    "output": response.output_tokens,
+                    "total": response.input_tokens + response.output_tokens,
+                    "unit": "TOKENS",
+                },
+                metadata={
+                    "task_id": self.task_id,
+                    "stop_reason": response.stop_reason,
+                    "tool_calls": len(response.tool_calls or []),
+                },
+            )
 
             self.input_tokens += response.input_tokens
             self.output_tokens += response.output_tokens
@@ -128,11 +184,33 @@ class AgentLoop:
                         f"{tc.name}  {args_str}"
                     )
 
+                    tool_span_id = self.langfuse.create_span(
+                        trace_id=self.langfuse_trace_id,
+                        name=f"tool.{tc.name}",
+                        input=tc.input,
+                        metadata={
+                            "task_id": self.task_id,
+                            "call_number": self.tool_call_count,
+                            "tool": tc.name,
+                        },
+                    )
                     result = self.tool_executor.execute(tc.name, tc.input)
 
                     if result.get("is_final_answer"):
                         final_answer = result["answer"]
                         self.tool_calls_log[-1]["is_final_answer"] = True
+                        self.langfuse.end_span(
+                            trace_id=self.langfuse_trace_id,
+                            span_id=tool_span_id,
+                            output={"is_final_answer": True, "answer": final_answer},
+                        )
+                        self.langfuse.create_event(
+                            trace_id=self.langfuse_trace_id,
+                            name="final_answer_submitted",
+                            output=final_answer,
+                            metadata={"task_id": self.task_id, "tool": tc.name},
+                            parent_observation_id=tool_span_id,
+                        )
                         self._vprint(f"\n  Final answer submitted")
                         self._dot()
                         break
@@ -144,6 +222,23 @@ class AgentLoop:
                         output_text = result.get("output", "(no output)")
 
                     self.tool_calls_log[-1]["output_preview"] = output_text[:500]
+
+                    self.langfuse.end_span(
+                        trace_id=self.langfuse_trace_id,
+                        span_id=tool_span_id,
+                        output={
+                            "error": result.get("error"),
+                            "output": output_text,
+                        },
+                        metadata={
+                            "task_id": self.task_id,
+                            "call_number": self.tool_call_count,
+                            "output_chars": len(output_text),
+                            "had_error": bool(result.get("error")),
+                        },
+                        level="ERROR" if result.get("error") else None,
+                        status_message="tool_error" if result.get("error") else None,
+                    )
 
                     # Verbose: show output preview
                     self._vprint(f"    -> {len(output_text)} chars")
@@ -239,6 +334,12 @@ class AgentLoop:
 
         else:
             max_steps_hit = True
+            self.langfuse.create_event(
+                trace_id=self.langfuse_trace_id,
+                name="max_tool_calls_hit",
+                metadata={"task_id": self.task_id, "max_tool_calls": self.max_tool_calls},
+                level="WARNING",
+            )
             self._vprint(f"\n  !! Hit max tool calls limit ({self.max_tool_calls})")
 
         wall_time = time.time() - start_time

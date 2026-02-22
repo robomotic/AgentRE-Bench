@@ -823,7 +823,17 @@ footer a:hover { color: var(--accent); }
           <p>Clone the repo and add at least one provider API key.</p>
           <code>git clone https://github.com/agentrebench/AgentRE-Bench.git
 cd AgentRE-Bench
-cp .env.example .env   # add your API key(s)</code>
+cp .env.example .env
+# add one or more keys:
+# ANTHROPIC_API_KEY=...
+# OPENAI_API_KEY=...
+# OPENROUTER_API_KEY=...
+# GOOGLE_API_KEY=...
+# DEEPSEEK_API_KEY=...
+# optional observability:
+# LANGFUSE_PUBLIC_KEY=...
+# LANGFUSE_SECRET_KEY=...
+# LANGFUSE_HOST=https://cloud.langfuse.com</code>
         </div>
       </div>
       <div class="step">
@@ -849,9 +859,14 @@ cp .env.example .env   # add your API key(s)</code>
         <div class="step-num">4</div>
         <div>
           <h3>Run the benchmark</h3>
-          <p>Run a single task or the full 13-level suite. Supports Claude, GPT, Gemini, and DeepSeek.</p>
+          <p>Run a single task or the full 13-level suite. Supports Claude, GPT, OpenRouter, Gemini, and DeepSeek.</p>
           <code>python run_benchmark.py --task level1_TCPServer -v
-python run_benchmark.py --all --provider anthropic</code>
+python run_benchmark.py --all --provider anthropic --model claude-opus-4-6
+python run_benchmark.py --all --provider openai --model gpt-4o
+python run_benchmark.py --all --provider openrouter --model openai/gpt-4o
+python run_benchmark.py --all --provider gemini --model gemini-2.0-flash
+python run_benchmark.py --all --provider deepseek --model deepseek-chat</code>
+          <p style="margin-top:8px; color:var(--text-dim);">OpenRouter requests include <strong>HTTP-Referer</strong> and <strong>X-Title</strong> headers automatically.</p>
         </div>
       </div>
     </div>
