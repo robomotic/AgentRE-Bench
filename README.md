@@ -2,7 +2,7 @@
 
 A benchmark for evaluating LLM agents on **long-horizon reverse engineering tasks** with deterministic scoring.
 
-> **Platform:** Linux/Unix (ELF x86-64). Windows PE support planned for a future release.
+> **Platform:** Linux/Unix (ELF x86-64). **Partial macOS support** (9/13 MACH-O binaries - see [MACHO_BUILD_NOTES.md](MACHO_BUILD_NOTES.md)). Windows PE support planned for future release.
 
 AgentRE-Bench gives an LLM agent a compiled ELF binary and a set of Linux static analysis tools (strings, objdump, readelf, etc.), then measures how well it can identify C2 infrastructure, encoding schemes, anti-analysis techniques, and communication protocols — all without human guidance.
 
@@ -193,8 +193,13 @@ docker run --rm --platform linux/amd64 \
 | `hexdump` | Hex + ASCII dump at specific offsets |
 | `xxd` | Hex dump (alternative format) |
 | `entropy` | Shannon entropy per sliding window (detects encrypted/compressed data) |
+| `pefile` | Parse Windows PE files (headers, sections, imports, exports, resources) |
 
 Plus `final_answer` — a structured submission tool the agent calls when done.
+
+**Platform Support:**
+- **ELF x86-64 binaries (Linux/Unix)** - fully supported with 13 benchmark tasks
+- **Windows PE binaries** - tooling ready, benchmark tasks planned for future release
 
 ## Setup
 

@@ -193,6 +193,26 @@ TOOL_SCHEMAS = [
         },
     },
     {
+        "name": "pefile",
+        "description": "Analyze Windows PE (Portable Executable) files. Parse PE headers, sections, imports, exports, and resources. Use this for .exe, .dll, and other PE format binaries.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Path to the PE file to analyze (relative to workspace root)"
+                },
+                "flags": {
+                    "type": "string",
+                    "description": "Analysis flags: 'headers' (DOS/NT/optional headers), 'sections' (section table), 'imports' (import directory), 'exports' (export directory), 'resources' (resources), 'all' (comprehensive dump)",
+                    "enum": ["headers", "sections", "imports", "exports", "resources", "all"],
+                    "default": "headers"
+                }
+            },
+            "required": ["path"]
+        }
+    },
+    {
         "name": "final_answer",
         "description": (
             "Submit your final reverse engineering analysis. "
@@ -450,6 +470,61 @@ class ToolExecutor:
                 "python3", "-c", ENTROPY_SCRIPT,
                 path, section, window,
             ]
+
+        if tool_name == "pefile":
+            flags = args.get("flags", "headers")
+
+            # Python script that uses pefile library
+            pefile_script = f"""
+import pefile
+import sys
+
+try:
+    pe = pefile.PE('{path}')
+
+    if '{flags}' == 'headers' or '{flags}' == 'all':
+        print("=== DOS HEADER ===")
+        print(pe.DOS_HEADER)
+        print("\\n=== NT HEADERS ===")
+        print(pe.NT_HEADERS)
+        print("\\n=== OPTIONAL HEADER ===")
+        print(pe.OPTIONAL_HEADER)
+
+    if '{flags}' == 'sections' or '{flags}' == 'all':
+        print("\\n=== SECTIONS ===")
+        for section in pe.sections:
+            print(f"{{section.Name.decode().rstrip(chr(0))}}:")
+            print(f"  Virtual Address: 0x{{section.VirtualAddress:x}}")
+            print(f"  Virtual Size: 0x{{section.Misc_VirtualSize:x}}")
+            print(f"  Raw Size: 0x{{section.SizeOfRawData:x}}")
+            print(f"  Characteristics: 0x{{section.Characteristics:x}}")
+
+    if '{flags}' == 'imports' or '{flags}' == 'all':
+        print("\\n=== IMPORTS ===")
+        if hasattr(pe, 'DIRECTORY_ENTRY_IMPORT'):
+            for entry in pe.DIRECTORY_ENTRY_IMPORT:
+                print(f"{{entry.dll.decode()}}:")
+                for imp in entry.imports:
+                    if imp.name:
+                        print(f"  {{imp.name.decode()}}")
+
+    if '{flags}' == 'exports' or '{flags}' == 'all':
+        print("\\n=== EXPORTS ===")
+        if hasattr(pe, 'DIRECTORY_ENTRY_EXPORT'):
+            for exp in pe.DIRECTORY_ENTRY_EXPORT.symbols:
+                print(f"  {{exp.name.decode() if exp.name else 'ordinal=' + str(exp.ordinal)}}")
+
+    if '{flags}' == 'resources' or '{flags}' == 'all':
+        print("\\n=== RESOURCES ===")
+        if hasattr(pe, 'DIRECTORY_ENTRY_RESOURCE'):
+            print("Resource directory present")
+
+    pe.close()
+except Exception as e:
+    print(f"Error: {{str(e)}}", file=sys.stderr)
+    sys.exit(1)
+"""
+            return ["python3", "-c", pefile_script]
 
         raise ValueError(f"Unknown tool: {tool_name!r}")
 
