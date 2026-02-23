@@ -13,7 +13,7 @@ ENV_KEY_MAP = {
 }
 
 DEFAULT_TOOLS = [
-    "file", "strings", "readelf", "objdump", "nm", "hexdump", "xxd", "entropy",
+    "file", "strings", "readelf", "objdump", "nm", "hexdump", "xxd", "entropy", "pefile",
 ]
 
 

@@ -183,23 +183,26 @@ docker run --rm --platform linux/amd64 \
 
 ### Available Tools
 
-| Tool | Description |
-|------|-------------|
-| `file` | File type identification |
-| `strings` | Extract printable strings (configurable min length) |
-| `readelf` | ELF headers, sections, symbols, program headers |
-| `objdump` | Disassembly, symbol tables, section contents |
-| `nm` | Symbol listing |
-| `hexdump` | Hex + ASCII dump at specific offsets |
-| `xxd` | Hex dump (alternative format) |
-| `entropy` | Shannon entropy per sliding window (detects encrypted/compressed data) |
-| `pefile` | Parse Windows PE files (headers, sections, imports, exports, resources) |
+Tools are conditionally provided based on binary format:
+
+| Tool | Universal | ELF | MACHO | PE | Description |
+|------|-----------|-----|-------|----|----|
+| `file` | ✓ | ✓ | ✓ | ✓ | File type identification |
+| `strings` | ✓ | ✓ | ✓ | ✓ | Extract printable strings |
+| `hexdump` | ✓ | ✓ | ✓ | ✓ | Hex + ASCII dump |
+| `xxd` | ✓ | ✓ | ✓ | ✓ | Hex dump (alternative) |
+| `entropy` | ✓ | ✓ | ✓ | ✓ | Shannon entropy detection |
+| `readelf` | | ✓ | | | ELF headers, sections, symbols |
+| `objdump` | | ✓ | | | Disassembly, symbol tables |
+| `nm` | | ✓ | ✓ | | Symbol listing |
+| `pefile` | | | | ✓ | PE headers, imports, exports |
 
 Plus `final_answer` — a structured submission tool the agent calls when done.
 
 **Platform Support:**
 - **ELF x86-64 binaries (Linux/Unix)** - fully supported with 13 benchmark tasks
-- **Windows PE binaries** - tooling ready, benchmark tasks planned for future release
+- **MACHO binaries (macOS)** - experimental support with universal tools + nm
+- **Windows PE binaries** - tooling ready (pefile), benchmark tasks planned
 
 ## Setup
 

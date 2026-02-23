@@ -556,6 +556,52 @@ def get_tool_schemas(include_final_answer: bool = True) -> list[dict]:
     return [t for t in TOOL_SCHEMAS if t["name"] != "final_answer"]
 
 
+def get_tool_schemas_for_format(file_type: str, include_final_answer: bool = True) -> list[dict]:
+    """
+    Return tool schemas appropriate for the given binary format.
+
+    Args:
+        file_type: Binary format (e.g., "ELF64", "PE32", "Mach-O")
+        include_final_answer: Whether to include final_answer tool
+
+    Returns:
+        Filtered list of tool schemas
+    """
+    # Universal tools (work with all formats)
+    universal_tools = {"file", "strings", "hexdump", "xxd", "entropy", "final_answer"}
+
+    # Format-specific tools
+    format_specific = {
+        "ELF": {"readelf", "objdump", "nm"},
+        "ELF64": {"readelf", "objdump", "nm"},
+        "ELF32": {"readelf", "objdump", "nm"},
+        "Mach-O": {"nm"},  # nm works with MACHO; otool not available in Docker
+        "Mach-O 64-bit": {"nm"},
+        "PE32": {"pefile"},
+        "PE32+": {"pefile"},
+        "PE": {"pefile"},
+    }
+
+    # Determine which tools to include
+    allowed = universal_tools.copy()
+
+    # Match file_type (case-insensitive prefix matching)
+    file_type_upper = file_type.upper()
+    for fmt, tools in format_specific.items():
+        if file_type_upper.startswith(fmt.upper()):
+            allowed.update(tools)
+            break
+
+    # Filter schemas
+    filtered = [s for s in TOOL_SCHEMAS if s["name"] in allowed]
+
+    # Optionally remove final_answer
+    if not include_final_answer:
+        filtered = [s for s in filtered if s["name"] != "final_answer"]
+
+    return filtered
+
+
 def schemas_to_openai(schemas: list[dict]) -> list[dict]:
     tools = []
     for s in schemas:
