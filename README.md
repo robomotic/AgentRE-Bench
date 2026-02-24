@@ -346,7 +346,7 @@ python scorer.py -G ground_truths/ -A agent_outputs/ -r report.json
 - **Fixed tool set** — agents can't install tools, write scripts, or use Ghidra/IDA. Standardizes evaluation but limits agent creativity.
 - **Single-agent** — no multi-agent collaboration or human-in-the-loop.
 - **Token cost** — a full 13-task run uses ~5-10M tokens on frontier models. Budget accordingly.
-- **Linux/Unix only** — all binaries are ELF x86-64 targeting Linux/Unix systems. No Windows PE, ARM, or MIPS samples yet.
+- **Platform support** — primary focus is ELF x86-64 (Linux/Unix) with 13 benchmark tasks. MACHO support is experimental (9/13 binaries buildable, see [MACHO_BUILD_NOTES.md](MACHO_BUILD_NOTES.md)). Windows PE tooling (pefile) is available but benchmark tasks are not yet developed. No ARM or MIPS samples yet.
 
 ## Roadmap
 

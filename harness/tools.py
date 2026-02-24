@@ -455,13 +455,13 @@ class ToolExecutor:
 
         if tool_name == "hexdump":
             offset = args.get("offset", 0)
-            length = min(args.get("length", 256), 4096)
-            return ["hexdump", "-C", "-s", str(int(offset)), "-n", str(int(length)), path]
+            length = min(int(args.get("length", 256)), 4096)
+            return ["hexdump", "-C", "-s", str(int(offset)), "-n", str(length), path]
 
         if tool_name == "xxd":
             offset = args.get("offset", 0)
-            length = min(args.get("length", 256), 4096)
-            return ["xxd", "-s", str(int(offset)), "-l", str(int(length)), path]
+            length = min(int(args.get("length", 256)), 4096)
+            return ["xxd", "-s", str(int(offset)), "-l", str(length), path]
 
         if tool_name == "entropy":
             section = args.get("section", "")
