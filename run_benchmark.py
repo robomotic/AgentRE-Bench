@@ -65,6 +65,12 @@ def main():
         help="API key override (normally loaded from .env or environment)",
     )
     parser.add_argument(
+        "--openai-base-url",
+        type=str,
+        default="",
+        help="Custom OpenAI API base URL (for OpenAI-compatible APIs or local LLMs)",
+    )
+    parser.add_argument(
         "--report",
         type=str,
         default=None,
@@ -117,6 +123,7 @@ def main():
         model=model,
         provider=args.provider,
         api_key=args.api_key,
+        openai_base_url=args.openai_base_url,
         max_tool_calls=args.max_tool_calls,
         max_tokens=args.max_tokens,
         use_docker=not args.no_docker,

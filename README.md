@@ -2,7 +2,7 @@
 
 A benchmark for evaluating LLM agents on **long-horizon reverse engineering tasks** with deterministic scoring.
 
-> **Platform:** Linux/Unix (ELF x86-64). Windows PE support planned for a future release.
+> **Platform:** Linux/Unix (ELF x86-64). **Partial macOS support** (9/13 MACH-O binaries - see [MACHO_BUILD_NOTES.md](MACHO_BUILD_NOTES.md)). Windows PE support planned for future release.
 
 AgentRE-Bench gives an LLM agent a compiled ELF binary and a set of Linux static analysis tools (strings, objdump, readelf, etc.), then measures how well it can identify C2 infrastructure, encoding schemes, anti-analysis techniques, and communication protocols — all without human guidance.
 
@@ -183,18 +183,26 @@ docker run --rm --platform linux/amd64 \
 
 ### Available Tools
 
-| Tool | Description |
-|------|-------------|
-| `file` | File type identification |
-| `strings` | Extract printable strings (configurable min length) |
-| `readelf` | ELF headers, sections, symbols, program headers |
-| `objdump` | Disassembly, symbol tables, section contents |
-| `nm` | Symbol listing |
-| `hexdump` | Hex + ASCII dump at specific offsets |
-| `xxd` | Hex dump (alternative format) |
-| `entropy` | Shannon entropy per sliding window (detects encrypted/compressed data) |
+Tools are conditionally provided based on binary format:
+
+| Tool | Universal | ELF | MACHO | PE | Description |
+|------|-----------|-----|-------|----|----|
+| `file` | ✓ | ✓ | ✓ | ✓ | File type identification |
+| `strings` | ✓ | ✓ | ✓ | ✓ | Extract printable strings |
+| `hexdump` | ✓ | ✓ | ✓ | ✓ | Hex + ASCII dump |
+| `xxd` | ✓ | ✓ | ✓ | ✓ | Hex dump (alternative) |
+| `entropy` | ✓ | ✓ | ✓ | ✓ | Shannon entropy detection |
+| `readelf` | | ✓ | | | ELF headers, sections, symbols |
+| `objdump` | | ✓ | | | Disassembly, symbol tables |
+| `nm` | | ✓ | ✓ | | Symbol listing |
+| `pefile` | | | | ✓ | PE headers, imports, exports |
 
 Plus `final_answer` — a structured submission tool the agent calls when done.
+
+**Platform Support:**
+- **ELF x86-64 binaries (Linux/Unix)** - fully supported with 13 benchmark tasks
+- **MACHO binaries (macOS)** - experimental support with universal tools + nm
+- **Windows PE binaries** - tooling ready (pefile), benchmark tasks planned
 
 ## Setup
 
@@ -214,6 +222,7 @@ cd AgentRE-Bench
 cp .env.example .env
 # Edit .env — add at least one provider key
 # Optional: add Langfuse keys to enable task/LLM/tool tracing
+# Optional: configure OPENAI_BASE_URL for custom/local LLM endpoints
 ```
 
 ### 2. Build Binaries
@@ -263,11 +272,37 @@ python run_benchmark.py --all --report results/opus_run1/
 | `--provider` | `anthropic` | `anthropic`, `openai`, `openrouter`, `gemini`, `deepseek` |
 | `--model` | per-provider | Model name |
 | `--api-key` | from .env | API key override |
+| `--openai-base-url` | from .env | Custom OpenAI API base URL |
 | `--report DIR` | `results/` | Output directory |
 | `--max-tool-calls` | `25` | Tool call budget per task |
 | `--max-tokens` | `4096` | Max tokens per LLM response |
 | `--no-docker` | | Run tools via local subprocess |
 | `-v` | | Verbose: show agent reasoning + tool I/O live |
+
+### Optional: Custom OpenAI Base URL
+
+For connecting to OpenAI-compatible endpoints (local LLMs, custom proxies, or AWS Bedrock):
+
+```bash
+# In .env file
+OPENAI_BASE_URL=http://localhost:1234/v1
+IS_BEDROCK_ANTHROPIC=true  # Only if endpoint returns finish_reason="stop" with tool calls
+```
+
+Or via command line:
+
+```bash
+python run_benchmark.py --all --provider openai --model your-model \
+  --openai-base-url http://localhost:1234/v1
+```
+
+**IS_BEDROCK_ANTHROPIC flag**: Some OpenAI-compatible endpoints (like AWS Bedrock with Anthropic models) return `finish_reason="stop"` even when tool calls are present. Set this to `true` to enable compatibility mode. Standard OpenAI endpoints should leave this `false` (default).
+
+**Common use cases:**
+- **LM Studio**: `http://localhost:1234/v1`
+- **Ollama**: `http://localhost:11434/v1`
+- **vLLM server**: `http://your-server:8000/v1`
+- **AWS Bedrock (Anthropic)**: Set base URL + `IS_BEDROCK_ANTHROPIC=true`
 
 ### Optional: Langfuse Logging
 
@@ -311,7 +346,7 @@ python scorer.py -G ground_truths/ -A agent_outputs/ -r report.json
 - **Fixed tool set** — agents can't install tools, write scripts, or use Ghidra/IDA. Standardizes evaluation but limits agent creativity.
 - **Single-agent** — no multi-agent collaboration or human-in-the-loop.
 - **Token cost** — a full 13-task run uses ~5-10M tokens on frontier models. Budget accordingly.
-- **Linux/Unix only** — all binaries are ELF x86-64 targeting Linux/Unix systems. No Windows PE, ARM, or MIPS samples yet.
+- **Platform support** — primary focus is ELF x86-64 (Linux/Unix) with 13 benchmark tasks. MACHO support is experimental (9/13 binaries buildable, see [MACHO_BUILD_NOTES.md](MACHO_BUILD_NOTES.md)). Windows PE tooling (pefile) is available but benchmark tasks are not yet developed. No ARM or MIPS samples yet.
 
 ## Roadmap
 

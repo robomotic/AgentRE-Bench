@@ -7,7 +7,7 @@ from typing import Any
 
 from .langfuse import NoopLangfuseClient
 from .providers.base import AgentProvider, ProviderResponse
-from .tools import ToolExecutor, get_tool_schemas
+from .tools import ToolExecutor, get_tool_schemas_for_format
 
 log = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ class AgentLoop:
         tool_executor: ToolExecutor,
         system_prompt: str,
         task_id: str,
+        file_type: str = "ELF64",
         max_tool_calls: int = 25,
         max_tokens: int = 4096,
         verbose: bool = False,
@@ -29,6 +30,7 @@ class AgentLoop:
         self.tool_executor = tool_executor
         self.system_prompt = system_prompt
         self.task_id = task_id
+        self.file_type = file_type
         self.max_tool_calls = max_tool_calls
         self.max_tokens = max_tokens
         self.verbose = verbose
@@ -55,7 +57,7 @@ class AgentLoop:
 
     def run(self) -> dict[str, Any]:
         start_time = time.time()
-        tools = get_tool_schemas(include_final_answer=True)
+        tools = get_tool_schemas_for_format(self.file_type, include_final_answer=True)
 
         # Initial user message
         self.messages.append({

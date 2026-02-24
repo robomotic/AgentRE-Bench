@@ -6,3 +6,5 @@ __pycache__/
 .DS_Store
 .claude/
 .vscode/settings.json
+binaries_macho/*
+test_provider.py

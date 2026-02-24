@@ -193,6 +193,26 @@ TOOL_SCHEMAS = [
         },
     },
     {
+        "name": "pefile",
+        "description": "Analyze Windows PE (Portable Executable) files. Parse PE headers, sections, imports, exports, and resources. Use this for .exe, .dll, and other PE format binaries.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "Path to the PE file to analyze (relative to workspace root)"
+                },
+                "flags": {
+                    "type": "string",
+                    "description": "Analysis flags: 'headers' (DOS/NT/optional headers), 'sections' (section table), 'imports' (import directory), 'exports' (export directory), 'resources' (resources), 'all' (comprehensive dump)",
+                    "enum": ["headers", "sections", "imports", "exports", "resources", "all"],
+                    "default": "headers"
+                }
+            },
+            "required": ["path"]
+        }
+    },
+    {
         "name": "final_answer",
         "description": (
             "Submit your final reverse engineering analysis. "
@@ -435,13 +455,13 @@ class ToolExecutor:
 
         if tool_name == "hexdump":
             offset = args.get("offset", 0)
-            length = min(args.get("length", 256), 4096)
-            return ["hexdump", "-C", "-s", str(int(offset)), "-n", str(int(length)), path]
+            length = min(int(args.get("length", 256)), 4096)
+            return ["hexdump", "-C", "-s", str(int(offset)), "-n", str(length), path]
 
         if tool_name == "xxd":
             offset = args.get("offset", 0)
-            length = min(args.get("length", 256), 4096)
-            return ["xxd", "-s", str(int(offset)), "-l", str(int(length)), path]
+            length = min(int(args.get("length", 256)), 4096)
+            return ["xxd", "-s", str(int(offset)), "-l", str(length), path]
 
         if tool_name == "entropy":
             section = args.get("section", "")
@@ -450,6 +470,61 @@ class ToolExecutor:
                 "python3", "-c", ENTROPY_SCRIPT,
                 path, section, window,
             ]
+
+        if tool_name == "pefile":
+            flags = args.get("flags", "headers")
+
+            # Python script that uses pefile library
+            pefile_script = f"""
+import pefile
+import sys
+
+try:
+    pe = pefile.PE('{path}')
+
+    if '{flags}' == 'headers' or '{flags}' == 'all':
+        print("=== DOS HEADER ===")
+        print(pe.DOS_HEADER)
+        print("\\n=== NT HEADERS ===")
+        print(pe.NT_HEADERS)
+        print("\\n=== OPTIONAL HEADER ===")
+        print(pe.OPTIONAL_HEADER)
+
+    if '{flags}' == 'sections' or '{flags}' == 'all':
+        print("\\n=== SECTIONS ===")
+        for section in pe.sections:
+            print(f"{{section.Name.decode().rstrip(chr(0))}}:")
+            print(f"  Virtual Address: 0x{{section.VirtualAddress:x}}")
+            print(f"  Virtual Size: 0x{{section.Misc_VirtualSize:x}}")
+            print(f"  Raw Size: 0x{{section.SizeOfRawData:x}}")
+            print(f"  Characteristics: 0x{{section.Characteristics:x}}")
+
+    if '{flags}' == 'imports' or '{flags}' == 'all':
+        print("\\n=== IMPORTS ===")
+        if hasattr(pe, 'DIRECTORY_ENTRY_IMPORT'):
+            for entry in pe.DIRECTORY_ENTRY_IMPORT:
+                print(f"{{entry.dll.decode()}}:")
+                for imp in entry.imports:
+                    if imp.name:
+                        print(f"  {{imp.name.decode()}}")
+
+    if '{flags}' == 'exports' or '{flags}' == 'all':
+        print("\\n=== EXPORTS ===")
+        if hasattr(pe, 'DIRECTORY_ENTRY_EXPORT'):
+            for exp in pe.DIRECTORY_ENTRY_EXPORT.symbols:
+                print(f"  {{exp.name.decode() if exp.name else 'ordinal=' + str(exp.ordinal)}}")
+
+    if '{flags}' == 'resources' or '{flags}' == 'all':
+        print("\\n=== RESOURCES ===")
+        if hasattr(pe, 'DIRECTORY_ENTRY_RESOURCE'):
+            print("Resource directory present")
+
+    pe.close()
+except Exception as e:
+    print(f"Error: {{str(e)}}", file=sys.stderr)
+    sys.exit(1)
+"""
+            return ["python3", "-c", pefile_script]
 
         raise ValueError(f"Unknown tool: {tool_name!r}")
 
@@ -479,6 +554,52 @@ def get_tool_schemas(include_final_answer: bool = True) -> list[dict]:
     if include_final_answer:
         return list(TOOL_SCHEMAS)
     return [t for t in TOOL_SCHEMAS if t["name"] != "final_answer"]
+
+
+def get_tool_schemas_for_format(file_type: str, include_final_answer: bool = True) -> list[dict]:
+    """
+    Return tool schemas appropriate for the given binary format.
+
+    Args:
+        file_type: Binary format (e.g., "ELF64", "PE32", "Mach-O")
+        include_final_answer: Whether to include final_answer tool
+
+    Returns:
+        Filtered list of tool schemas
+    """
+    # Universal tools (work with all formats)
+    universal_tools = {"file", "strings", "hexdump", "xxd", "entropy", "final_answer"}
+
+    # Format-specific tools
+    format_specific = {
+        "ELF": {"readelf", "objdump", "nm"},
+        "ELF64": {"readelf", "objdump", "nm"},
+        "ELF32": {"readelf", "objdump", "nm"},
+        "Mach-O": {"nm"},  # nm works with MACHO; otool not available in Docker
+        "Mach-O 64-bit": {"nm"},
+        "PE32": {"pefile"},
+        "PE32+": {"pefile"},
+        "PE": {"pefile"},
+    }
+
+    # Determine which tools to include
+    allowed = universal_tools.copy()
+
+    # Match file_type (case-insensitive prefix matching)
+    file_type_upper = file_type.upper()
+    for fmt, tools in format_specific.items():
+        if file_type_upper.startswith(fmt.upper()):
+            allowed.update(tools)
+            break
+
+    # Filter schemas
+    filtered = [s for s in TOOL_SCHEMAS if s["name"] in allowed]
+
+    # Optionally remove final_answer
+    if not include_final_answer:
+        filtered = [s for s in filtered if s["name"] != "final_answer"]
+
+    return filtered
 
 
 def schemas_to_openai(schemas: list[dict]) -> list[dict]:

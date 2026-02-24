@@ -13,10 +13,11 @@ DEFAULT_BASE_URL = "https://api.openai.com/v1"
 
 
 class OpenAIProvider(AgentProvider):
-    def __init__(self, api_key: str, model: str, base_url: str | None = None):
+    def __init__(self, api_key: str, model: str, base_url: str | None = None, is_bedrock_anthropic: bool = False):
         self.api_key = api_key
         self.model = model
         self.base_url = (base_url or DEFAULT_BASE_URL).rstrip("/")
+        self.is_bedrock_anthropic = is_bedrock_anthropic
 
     def _token_param(self) -> str:
         """Parameter name for max output tokens. Override for API compatibility."""
@@ -45,6 +46,7 @@ class OpenAIProvider(AgentProvider):
             "model": self.model,
             "messages": oai_messages,
             "tools": openai_tools,
+            "tool_choice": "auto",  # Allow model to choose when to use tools
             self._token_param(): max_tokens,
         }
 
@@ -70,11 +72,24 @@ class OpenAIProvider(AgentProvider):
                 ToolCall(id=tc["id"], name=tc["function"]["name"], input=args)
             )
 
-        stop_reason = "end_turn"
-        if choice.get("finish_reason") == "tool_calls":
-            stop_reason = "tool_use"
-        elif choice.get("finish_reason") == "length":
-            stop_reason = "max_tokens"
+        # Determine stop reason
+        if self.is_bedrock_anthropic:
+            # Bedrock/Anthropic mode: endpoint returns "stop" even with tool_calls
+            # Check for tool presence first
+            if tool_calls:
+                stop_reason = "tool_use"
+            elif choice.get("finish_reason") == "length":
+                stop_reason = "max_tokens"
+            else:
+                stop_reason = "end_turn"
+        else:
+            # Standard OpenAI mode: check finish_reason
+            if choice.get("finish_reason") == "tool_calls":
+                stop_reason = "tool_use"
+            elif choice.get("finish_reason") == "length":
+                stop_reason = "max_tokens"
+            else:
+                stop_reason = "end_turn"
 
         usage = result.get("usage", {})
 

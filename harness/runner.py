@@ -28,6 +28,7 @@ class TaskConfig:
     binary_path: Path
     ground_truth_path: Path
     difficulty: int
+    file_type: str = "ELF64"  # Default for backward compatibility
 
 
 def load_tasks(manifest_path: Path, project_root: Path) -> list[TaskConfig]:
@@ -36,12 +37,19 @@ def load_tasks(manifest_path: Path, project_root: Path) -> list[TaskConfig]:
 
     tasks = []
     for entry in data["tasks"]:
+        # Load ground truth to extract file_type
+        gt_path = project_root / entry["ground_truth"]
+        with open(gt_path) as gt_f:
+            gt_data = json.load(gt_f)
+            file_type = gt_data.get("file_type", "ELF64")  # Default to ELF64 for backward compat
+
         tasks.append(
             TaskConfig(
                 task_id=entry["task_id"],
                 binary_path=project_root / "binaries" / entry["binary_name"],
                 ground_truth_path=project_root / entry["ground_truth"],
                 difficulty=entry["difficulty"],
+                file_type=file_type,
             )
         )
     return tasks
@@ -52,8 +60,10 @@ You are an expert reverse engineer analyzing a binary executable.
 
 Your task is to analyze the binary located at: {binary_path}
 
+This is a {file_type} binary. The available tools have been selected for this format.
+
 Use the available tools to examine the binary and determine:
-1. **File type** (e.g. ELF64)
+1. **File type** (e.g. ELF64, PE32, Mach-O)
 2. **Whether strings are encoded/encrypted** (true/false)
 3. **The decoded C2 (command and control) address** — the IP:port or URL the binary connects to
 4. **Techniques used** — specific techniques like socket_connect, xor_encoding, anti_debug_ptrace, etc.
@@ -86,6 +96,7 @@ def build_system_prompt(task: TaskConfig, config: BenchmarkConfig) -> str:
 
     return SYSTEM_PROMPT_TEMPLATE.format(
         binary_path=binary_display,
+        file_type=task.file_type,
         bonus_instructions=bonus,
     )
 
@@ -107,7 +118,9 @@ def run_single_task(
 
     # Create provider
     api_key = config.resolve_api_key()
-    provider = create_provider(config.provider, config.model, api_key)
+    base_url = config.openai_base_url if config.provider == "openai" else None
+    is_bedrock = config.is_bedrock_anthropic if config.provider == "openai" else False
+    provider = create_provider(config.provider, config.model, api_key, base_url, is_bedrock)
 
     # Build system prompt
     system_prompt = build_system_prompt(task, config)
@@ -128,6 +141,7 @@ def run_single_task(
         tool_executor=tool_executor,
         system_prompt=system_prompt,
         task_id=task.task_id,
+        file_type=task.file_type,
         max_tool_calls=config.max_tool_calls,
         max_tokens=config.max_tokens,
         verbose=config.verbose,

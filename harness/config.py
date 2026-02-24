@@ -13,7 +13,7 @@ ENV_KEY_MAP = {
 }
 
 DEFAULT_TOOLS = [
-    "file", "strings", "readelf", "objdump", "nm", "hexdump", "xxd", "entropy",
+    "file", "strings", "readelf", "objdump", "nm", "hexdump", "xxd", "entropy", "pefile",
 ]
 
 
@@ -49,6 +49,8 @@ class BenchmarkConfig:
     model: str = "claude-opus-4-6"
     provider: str = "anthropic"
     api_key: str = ""
+    openai_base_url: str = ""    # Custom OpenAI API base URL
+    is_bedrock_anthropic: bool = False  # Enable Bedrock/Anthropic-compatible mode
 
     max_tool_calls: int = 25
     tool_timeout_seconds: int = 30
@@ -81,6 +83,15 @@ class BenchmarkConfig:
 
         # Load .env file so API keys are available via env vars
         _load_dotenv(self.project_root)
+
+        # Load OpenAI base URL from environment if not explicitly set
+        if not self.openai_base_url:
+            self.openai_base_url = os.environ.get("OPENAI_BASE_URL", "")
+
+        # Load Bedrock/Anthropic compatibility flag
+        if not self.is_bedrock_anthropic:
+            bedrock_flag = os.environ.get("IS_BEDROCK_ANTHROPIC", "").lower()
+            self.is_bedrock_anthropic = bedrock_flag in ("true", "1", "yes")
 
         if not self.langfuse_public_key:
             self.langfuse_public_key = os.environ.get("LANGFUSE_PUBLIC_KEY", "")
