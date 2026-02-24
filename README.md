@@ -222,6 +222,7 @@ cd AgentRE-Bench
 cp .env.example .env
 # Edit .env — add at least one provider key
 # Optional: add Langfuse keys to enable task/LLM/tool tracing
+# Optional: configure OPENAI_BASE_URL for custom/local LLM endpoints
 ```
 
 ### 2. Build Binaries
@@ -271,11 +272,37 @@ python run_benchmark.py --all --report results/opus_run1/
 | `--provider` | `anthropic` | `anthropic`, `openai`, `openrouter`, `gemini`, `deepseek` |
 | `--model` | per-provider | Model name |
 | `--api-key` | from .env | API key override |
+| `--openai-base-url` | from .env | Custom OpenAI API base URL |
 | `--report DIR` | `results/` | Output directory |
 | `--max-tool-calls` | `25` | Tool call budget per task |
 | `--max-tokens` | `4096` | Max tokens per LLM response |
 | `--no-docker` | | Run tools via local subprocess |
 | `-v` | | Verbose: show agent reasoning + tool I/O live |
+
+### Optional: Custom OpenAI Base URL
+
+For connecting to OpenAI-compatible endpoints (local LLMs, custom proxies, or AWS Bedrock):
+
+```bash
+# In .env file
+OPENAI_BASE_URL=http://localhost:1234/v1
+IS_BEDROCK_ANTHROPIC=true  # Only if endpoint returns finish_reason="stop" with tool calls
+```
+
+Or via command line:
+
+```bash
+python run_benchmark.py --all --provider openai --model your-model \
+  --openai-base-url http://localhost:1234/v1
+```
+
+**IS_BEDROCK_ANTHROPIC flag**: Some OpenAI-compatible endpoints (like AWS Bedrock with Anthropic models) return `finish_reason="stop"` even when tool calls are present. Set this to `true` to enable compatibility mode. Standard OpenAI endpoints should leave this `false` (default).
+
+**Common use cases:**
+- **LM Studio**: `http://localhost:1234/v1`
+- **Ollama**: `http://localhost:11434/v1`
+- **vLLM server**: `http://your-server:8000/v1`
+- **AWS Bedrock (Anthropic)**: Set base URL + `IS_BEDROCK_ANTHROPIC=true`
 
 ### Optional: Langfuse Logging
 

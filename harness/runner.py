@@ -118,7 +118,9 @@ def run_single_task(
 
     # Create provider
     api_key = config.resolve_api_key()
-    provider = create_provider(config.provider, config.model, api_key)
+    base_url = config.openai_base_url if config.provider == "openai" else None
+    is_bedrock = config.is_bedrock_anthropic if config.provider == "openai" else False
+    provider = create_provider(config.provider, config.model, api_key, base_url, is_bedrock)
 
     # Build system prompt
     system_prompt = build_system_prompt(task, config)
