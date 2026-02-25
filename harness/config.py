@@ -50,6 +50,7 @@ class BenchmarkConfig:
     provider: str = "anthropic"
     api_key: str = ""
     openai_base_url: str = ""    # Custom OpenAI API base URL
+    openai_custom_headers: dict[str, str] = field(default_factory=dict)  # Custom HTTP headers for OpenAI
     is_bedrock_anthropic: bool = False  # Enable Bedrock/Anthropic-compatible mode
 
     max_tool_calls: int = 25

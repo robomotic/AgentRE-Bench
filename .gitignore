@@ -1,6 +1,7 @@
 .env
 binaries/
 results/
+results_cs_comparison/
 __pycache__/
 *.pyc
 .DS_Store
@@ -8,3 +9,6 @@ __pycache__/
 .vscode/settings.json
 binaries_macho/*
 test_provider.py
+run_cs_benchmarks.py
+generate_report.py
+analyze_context_issues.py

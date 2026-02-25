@@ -116,6 +116,10 @@ Beyond correctness, AgentRE-Bench records research-grade metrics for every task:
 | `max_steps_hit` | Whether the agent exhausted its 25-call budget |
 | `wall_time_seconds` | End-to-end wall clock time |
 | `input_tokens` / `output_tokens` | Token consumption |
+| `error_occurred` | Whether an error occurred during task execution |
+| `error_type` | Type of error: `context_overflow`, `timeout`, `http_error`, or `other` |
+| `error_message` | Human-readable error description with extracted details |
+| `http_status_code` | HTTP status code if applicable (0 otherwise) |
 
 **Aggregate Metrics:**
 
@@ -128,6 +132,13 @@ Beyond correctness, AgentRE-Bench records research-grade metrics for every task:
 | `episode_length_*` | Wall time distribution (min/max/mean/median) |
 | `tool_usage_distribution` | Which tools models prefer across all tasks |
 | `max_steps_hit_count` | How often agents exhaust their budget |
+| `total_errors` | Total number of tasks with errors |
+| `errors_by_type` | Count of each error type (`context_overflow`, `timeout`, etc.) |
+| `errors_by_http_status` | Count of HTTP errors by status code (`400`, `500`, etc.) |
+| `context_overflow_errors` | Quick count of context window overflow errors |
+| `timeout_errors` | Quick count of timeout errors |
+
+**Error Tracking:** Every task failure is automatically classified and logged with detailed error information, including context overflow detection (with token counts), timeout identification, and HTTP error codes. This enables precise debugging and optimization recommendations.
 
 These metrics enable **failure taxonomy** — categorizing failures into:
 - Byte-level reasoning failure
@@ -338,6 +349,32 @@ python scorer.py -g ground_truths/level1_TCPServer.json \
 # Batch
 python scorer.py -G ground_truths/ -A agent_outputs/ -r report.json
 ```
+
+## Querying Error Information
+
+The benchmark automatically tracks and classifies all errors. Query error information from `benchmark_report.json`:
+
+```bash
+# View aggregate error statistics
+jq '.aggregate_metrics | {total_errors, errors_by_type, context_overflow_errors, timeout_errors}' benchmark_report.json
+
+# Find all tasks that had errors
+jq '.task_metrics[] | select(.error_occurred == true) | {task_id, error_type, error_message}' benchmark_report.json
+
+# List tasks with context overflow errors
+jq '.task_metrics[] | select(.error_type == "context_overflow") | {task_id, error_message, tool_calls_total}' benchmark_report.json
+
+# Check HTTP error breakdown
+jq '.aggregate_metrics.errors_by_http_status' benchmark_report.json
+```
+
+**Error types tracked:**
+- `context_overflow` — Prompt exceeds model's context window (extracts token count)
+- `timeout` — Request timed out
+- `http_error` — HTTP error with extracted status code
+- `other` — Unclassified errors
+
+See [ERROR_TRACKING.md](ERROR_TRACKING.md) for detailed documentation (if available in local setup).
 
 ## Known Limitations
 

@@ -30,6 +30,12 @@ class TaskMetrics:
     input_tokens: int = 0
     output_tokens: int = 0
 
+    # Error tracking
+    error_occurred: bool = False
+    error_type: str = ""  # "http_error", "timeout", "context_overflow", "other"
+    error_message: str = ""
+    http_status_code: int = 0  # 0 if not HTTP error
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "task_id": self.task_id,
@@ -51,6 +57,10 @@ class TaskMetrics:
             "total_tokens": self.total_tokens,
             "input_tokens": self.input_tokens,
             "output_tokens": self.output_tokens,
+            "error_occurred": self.error_occurred,
+            "error_type": self.error_type,
+            "error_message": self.error_message,
+            "http_status_code": self.http_status_code,
         }
 
 
@@ -78,6 +88,13 @@ class AggregateMetrics:
     tasks_run: int = 0
     tasks_with_answer: int = 0
 
+    # Error tracking aggregates
+    total_errors: int = 0
+    errors_by_type: dict[str, int] = field(default_factory=dict)  # "timeout", "context_overflow", "http_400", etc.
+    errors_by_http_status: dict[str, int] = field(default_factory=dict)  # "400", "500", etc.
+    context_overflow_errors: int = 0
+    timeout_errors: int = 0
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "success_rate": round(self.success_rate, 4),
@@ -97,6 +114,11 @@ class AggregateMetrics:
             "max_steps_hit_count": self.max_steps_hit_count,
             "tasks_run": self.tasks_run,
             "tasks_with_answer": self.tasks_with_answer,
+            "total_errors": self.total_errors,
+            "errors_by_type": self.errors_by_type,
+            "errors_by_http_status": self.errors_by_http_status,
+            "context_overflow_errors": self.context_overflow_errors,
+            "timeout_errors": self.timeout_errors,
         }
 
 
@@ -106,6 +128,13 @@ def collect_task_metrics(
     score_result: dict[str, Any],
 ) -> TaskMetrics:
     hallucinated = score_result.get("hallucinated_techniques", [])
+
+    # Extract error information from agent_result
+    error_info = agent_result.get("error_info", {})
+    error_occurred = error_info.get("error_occurred", False)
+    error_type = error_info.get("error_type", "")
+    error_message = error_info.get("error_message", "")
+    http_status_code = error_info.get("http_status_code", 0)
 
     return TaskMetrics(
         task_id=task_id,
@@ -127,6 +156,10 @@ def collect_task_metrics(
         total_tokens=agent_result.get("total_tokens", 0),
         input_tokens=agent_result.get("input_tokens", 0),
         output_tokens=agent_result.get("output_tokens", 0),
+        error_occurred=error_occurred,
+        error_type=error_type,
+        error_message=error_message,
+        http_status_code=http_status_code,
     )
 
 
@@ -184,5 +217,36 @@ def compute_aggregate(task_metrics: list[TaskMetrics]) -> AggregateMetrics:
     agg.total_wall_time = sum(times)
     agg.total_tokens = sum(m.total_tokens for m in task_metrics)
     agg.max_steps_hit_count = sum(1 for m in task_metrics if m.max_steps_hit)
+
+    # Error aggregation
+    agg.total_errors = sum(1 for m in task_metrics if m.error_occurred)
+
+    # Count errors by type
+    errors_by_type: dict[str, int] = {}
+    errors_by_http_status: dict[str, int] = {}
+    context_overflow_count = 0
+    timeout_count = 0
+
+    for m in task_metrics:
+        if m.error_occurred:
+            # Count by error type
+            if m.error_type:
+                errors_by_type[m.error_type] = errors_by_type.get(m.error_type, 0) + 1
+
+            # Count by HTTP status if applicable
+            if m.http_status_code > 0:
+                status_str = str(m.http_status_code)
+                errors_by_http_status[status_str] = errors_by_http_status.get(status_str, 0) + 1
+
+            # Count specific error types
+            if m.error_type == "context_overflow":
+                context_overflow_count += 1
+            elif m.error_type == "timeout":
+                timeout_count += 1
+
+    agg.errors_by_type = errors_by_type
+    agg.errors_by_http_status = errors_by_http_status
+    agg.context_overflow_errors = context_overflow_count
+    agg.timeout_errors = timeout_count
 
     return agg

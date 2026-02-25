@@ -13,21 +13,27 @@ DEFAULT_BASE_URL = "https://api.openai.com/v1"
 
 
 class OpenAIProvider(AgentProvider):
-    def __init__(self, api_key: str, model: str, base_url: str | None = None, is_bedrock_anthropic: bool = False):
+    def __init__(self, api_key: str, model: str, base_url: str | None = None, is_bedrock_anthropic: bool = False, custom_headers: dict[str, str] | None = None):
         self.api_key = api_key
         self.model = model
         self.base_url = (base_url or DEFAULT_BASE_URL).rstrip("/")
         self.is_bedrock_anthropic = is_bedrock_anthropic
+        self.custom_headers = custom_headers or {}
 
     def _token_param(self) -> str:
         """Parameter name for max output tokens. Override for API compatibility."""
         return "max_completion_tokens"
 
     def _request_headers(self) -> dict[str, str]:
-        return {
+        headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}",
         }
+        # Merge custom headers (custom headers can override defaults except Authorization)
+        for key, value in self.custom_headers.items():
+            if key.lower() != "authorization":  # Prevent API key override
+                headers[key] = value
+        return headers
 
     def create_message(
         self,
@@ -56,8 +62,26 @@ class OpenAIProvider(AgentProvider):
         url = f"{self.base_url}/chat/completions"
         req = urllib.request.Request(url, data=data, headers=headers, method="POST")
 
-        with urllib.request.urlopen(req, timeout=300) as resp:
-            result = json.loads(resp.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(req, timeout=300) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode("utf-8", errors="replace")
+            log.error("OpenAI-compatible API error %d: %s", e.code, error_body)
+            # Try to parse error JSON for better error message
+            try:
+                error_json = json.loads(error_body)
+                if "errors" in error_json:
+                    # CS GenAI Hub format
+                    error_msg = error_json["errors"][0].get("message", error_body)
+                elif "error" in error_json:
+                    # Standard OpenAI format
+                    error_msg = error_json["error"].get("message", error_body)
+                else:
+                    error_msg = error_body
+                raise RuntimeError(f"HTTP {e.code}: {error_msg}")
+            except (json.JSONDecodeError, KeyError, IndexError):
+                raise RuntimeError(f"HTTP {e.code}: {error_body}")
 
         choice = result["choices"][0]
         message = choice["message"]

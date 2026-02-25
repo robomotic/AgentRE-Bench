@@ -20,6 +20,7 @@ def create_provider(
     api_key: str,
     base_url: str | None = None,
     is_bedrock_anthropic: bool = False,
+    custom_headers: dict[str, str] | None = None,
 ) -> AgentProvider:
     cls = PROVIDER_MAP.get(provider_name)
     if cls is None:
@@ -34,5 +35,7 @@ def create_provider(
             kwargs["base_url"] = base_url
         if is_bedrock_anthropic:
             kwargs["is_bedrock_anthropic"] = is_bedrock_anthropic
+        if custom_headers:
+            kwargs["custom_headers"] = custom_headers
         return cls(**kwargs)
     return cls(api_key=api_key, model=model)

@@ -17,6 +17,12 @@ Then just pick a provider/model:
     python run_benchmark.py --all --provider deepseek --model deepseek-chat
     python run_benchmark.py --task level1_TCPServer --model claude-opus-4-6
     python run_benchmark.py --task level1_TCPServer --model claude-opus-4-6 -v
+
+Custom headers for OpenAI-compatible backends:
+    python run_benchmark.py --task level1_TCPServer --provider openai --model gpt-4o \
+        --openai-header "User-Agent:HELLO" \
+        --openai-header "X-REASONING-EFFORT:medium" \
+        --openai-header "X-OUTPUT-REASONING:true"
 """
 
 import argparse
@@ -71,6 +77,14 @@ def main():
         help="Custom OpenAI API base URL (for OpenAI-compatible APIs or local LLMs)",
     )
     parser.add_argument(
+        "--openai-header",
+        type=str,
+        action="append",
+        dest="openai_headers",
+        metavar="KEY:VALUE",
+        help="Custom HTTP header for OpenAI requests (can be used multiple times). Format: 'Header-Name:value'",
+    )
+    parser.add_argument(
         "--report",
         type=str,
         default=None,
@@ -116,6 +130,16 @@ def main():
 
     project_root = Path(__file__).parent.resolve()
 
+    # Parse custom headers for OpenAI
+    custom_headers = {}
+    if args.openai_headers:
+        for header in args.openai_headers:
+            if ":" not in header:
+                print(f"Error: Invalid header format '{header}'. Expected 'Header-Name:value'", file=sys.stderr)
+                sys.exit(1)
+            key, _, value = header.partition(":")
+            custom_headers[key.strip()] = value.strip()
+
     config = BenchmarkConfig(
         project_root=project_root,
         workspace_dir=project_root / "binaries",
@@ -124,6 +148,7 @@ def main():
         provider=args.provider,
         api_key=args.api_key,
         openai_base_url=args.openai_base_url,
+        openai_custom_headers=custom_headers,
         max_tool_calls=args.max_tool_calls,
         max_tokens=args.max_tokens,
         use_docker=not args.no_docker,

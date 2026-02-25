@@ -45,6 +45,12 @@ class AgentLoop:
         self.invalid_tool_calls = 0
         self.invalid_json_attempts = 0
 
+        # Error tracking
+        self.error_occurred = False
+        self.error_type = ""
+        self.error_message = ""
+        self.http_status_code = 0
+
     def _vprint(self, *args, **kwargs):
         """Print only in verbose mode."""
         if self.verbose:
@@ -93,6 +99,37 @@ class AgentLoop:
                     max_tokens=self.max_tokens,
                 )
             except Exception as e:
+                # Classify the error
+                error_str = str(e)
+                self.error_occurred = True
+                self.error_message = error_str
+
+                # Check for specific error types
+                if "prompt is too long" in error_str or "context" in error_str.lower() and "maximum" in error_str.lower():
+                    self.error_type = "context_overflow"
+                    # Try to extract token count from error message
+                    import re
+                    match = re.search(r"(\d+)\s*tokens?\s*>", error_str)
+                    if match:
+                        self.error_message = f"Context overflow: {match.group(1)} tokens"
+                elif "timed out" in error_str.lower() or "timeout" in error_str.lower():
+                    self.error_type = "timeout"
+                elif "HTTP" in error_str and "400" in error_str:
+                    self.error_type = "http_error"
+                    self.http_status_code = 400
+                elif "HTTP" in error_str and "500" in error_str:
+                    self.error_type = "http_error"
+                    self.http_status_code = 500
+                elif "HTTP" in error_str:
+                    self.error_type = "http_error"
+                    # Try to extract status code
+                    import re
+                    match = re.search(r"HTTP\s*(\d{3})", error_str)
+                    if match:
+                        self.http_status_code = int(match.group(1))
+                else:
+                    self.error_type = "other"
+
                 self.langfuse.end_generation(
                     trace_id=self.langfuse_trace_id,
                     generation_id=generation_id,
@@ -380,6 +417,12 @@ class AgentLoop:
             "wall_time_seconds": round(wall_time, 2),
             "max_steps_hit": max_steps_hit,
             "has_valid_answer": final_answer is not None,
+            "error_info": {
+                "error_occurred": self.error_occurred,
+                "error_type": self.error_type,
+                "error_message": self.error_message,
+                "http_status_code": self.http_status_code,
+            },
         }
 
     def _try_extract_json(self, text: str) -> dict | None:
