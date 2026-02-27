@@ -1,3 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentRE-Bench Results</title>
+  <style>
+/* AgentRE-Bench Visualizations Stylesheet */
+/* Matches theme from docs/index.html */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Theme Colors (from docs/index.html) */
+  --bg: #0a0a12;
+  --surface: #111119;
+  --surface-alt: #16161f;
+  --border: #1e1e2a;
+  --text: #e0e0e8;
+  --text-dim: #8888a0;
+  --accent: #00d4aa;
+  --accent-dim: rgba(0, 212, 170, 0.12);
+  --indigo: #6366f1;
+  --red: #ef4444;
+  --orange: #f59e0b;
+  --yellow: #eab308;
+  --green: #22c55e;
+  --cyan: #06b6d4;
+
+  /* Fonts */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: "SF Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
+
+  /* Spacing */
+  --container-max: 1200px;
+  --container-padding: 24px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Navigation Bar ── */
+.viz-navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.viz-navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px var(--container-padding);
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+.nav-brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-tabs .tab {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.nav-tabs .tab:hover {
+  color: var(--text);
+  background: var(--surface-alt);
+}
+
+.nav-tabs .tab.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.nav-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-selector label {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.nav-selector select {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: var(--font);
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.nav-selector select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ── Main Container ── */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+#app {
+  padding: 40px 0;
+  min-height: calc(100vh - 120px);
+}
+
+/* ── Metric Cards ── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: border-color 0.2s;
+}
+
+.metric-card:hover {
+  border-color: var(--accent);
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  font-family: var(--mono);
+}
+
+.metric-value.accent {
+  color: var(--accent);
+}
+
+.metric-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* ── Charts ── */
+.chart-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.chart-canvas {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+}
+
+/* ── Task Table ── */
+.task-table-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.task-table thead th {
+  text-align: left;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-alt);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.task-table thead th:hover {
+  color: var(--accent);
+}
+
+.task-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.task-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.task-table tbody tr:hover {
+  background: var(--surface-alt);
+}
+
+.task-table tbody tr.expandable {
+  cursor: pointer;
+}
+
+.task-table .level-num {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.task-table .score-cell {
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+.task-table .score-good {
+  color: var(--green);
+}
+
+.task-table .score-medium {
+  color: var(--yellow);
+}
+
+.task-table .score-poor {
+  color: var(--red);
+}
+
+.error-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--red);
+}
+
+/* ── Expandable Row ── */
+.expanded-content {
+  background: var(--surface-alt);
+  padding: 16px;
+}
+
+.field-scores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.field-score-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.field-score-item .label {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.field-score-item .value {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Heatmap ── */
+.heatmap-container {
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.heatmap {
+  display: grid;
+  gap: 2px;
+  min-width: 600px;
+}
+
+.heatmap-header {
+  display: contents;
+}
+
+.heatmap-row {
+  display: contents;
+}
+
+.heatmap-cell {
+  padding: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: transform 0.2s;
+}
+
+.heatmap-cell.header {
+  background: var(--surface);
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.heatmap-cell.label {
+  background: var(--surface);
+  font-family: var(--mono);
+  font-weight: 600;
+  text-align: right;
+  color: var(--accent);
+}
+
+.heatmap-cell.data {
+  background: var(--surface);
+  font-family: var(--mono);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.heatmap-cell.data:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* Heatmap color scale (0.0 to 1.0) */
+.heatmap-cell[data-score="0"] { background: #1a1a24; color: #555566; }
+.heatmap-cell[data-score="1"] { background: #1e2433; color: #666677; }
+.heatmap-cell[data-score="2"] { background: #223044; color: #777788; }
+.heatmap-cell[data-score="3"] { background: #2a4055; color: #888899; }
+.heatmap-cell[data-score="4"] { background: #325066; color: #9999aa; }
+.heatmap-cell[data-score="5"] { background: #3a6077; color: #aaaacc; }
+.heatmap-cell[data-score="6"] { background: #007755; color: #ccddee; }
+.heatmap-cell[data-score="7"] { background: #009966; color: #ddeeff; }
+.heatmap-cell[data-score="8"] { background: #00bb77; color: #ffffff; }
+.heatmap-cell[data-score="9"] { background: #00cc88; color: #ffffff; }
+.heatmap-cell[data-score="10"] { background: #00d4aa; color: #0a0a12; }
+
+/* ── Model Comparison Cards ── */
+.model-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.model-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.model-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.model-card.selected {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.model-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.model-card-score {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.model-card-meta {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* ── Page Headers ── */
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+
+/* ── Config Panel ── */
+.config-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.config-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.config-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.config-value {
+  font-size: 1rem;
+  font-family: var(--mono);
+  color: var(--text);
+}
+
+/* ── Loading State ── */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  font-size: 1.2rem;
+  color: var(--text-dim);
+}
+
+/* ── Responsive Design ── */
+@media (max-width: 768px) {
+  .viz-navbar .container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .nav-tabs {
+    justify-content: center;
+  }
+
+  .nav-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-selector select {
+    width: 100%;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .model-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .heatmap {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --container-padding: 16px;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+  }
+
+  .task-table {
+    font-size: 0.8rem;
+  }
+
+  .task-table thead th,
+  .task-table tbody td {
+    padding: 8px 12px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="viz-navbar">
+    <div class="container">
+      <div class="nav-brand">AgentRE Benchmark Results</div>
+      <div class="nav-tabs">
+        <a href="#/dashboard" class="tab active">Dashboard</a>
+        <a href="#/compare" class="tab">Compare</a>
+      </div>
+      <div class="nav-selector">
+        <label>Select Model:</label>
+        <select id="model-selector"></select>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area (dynamically populated) -->
+  <main id="app">
+    <div class="loading">Loading...</div>
+  </main>
+
+  <!-- Embedded Benchmark Data -->
+  <script id="benchmark-data" type="application/json">
+[
+  {
+    "config": {
+      "model": "claude-4-6-opus",
+      "provider": "openai",
+      "max_tool_calls": 25,
+      "use_docker": true
+    },
+    "aggregate_metrics": {
+      "success_rate": 0.0,
+      "main_score": 0.4,
+      "bonus_score": 0.0,
+      "total_score": 0.4,
+      "avg_tool_calls_per_task": 17.0,
+      "avg_tool_calls_per_success": 0.0,
+      "tool_usage_distribution": {
+        "file": 1,
+        "readelf": 2,
+        "strings": 3,
+        "entropy": 1,
+        "nm": 1,
+        "objdump": 6,
+        "hexdump": 3
+      },
+      "avg_hallucination_rate": 0.0,
+      "episode_length_min": 179.96,
+      "episode_length_max": 179.96,
+      "episode_length_mean": 179.96,
+      "episode_length_median": 179.96,
+      "total_wall_time": 179.96,
+      "total_tokens": 10630,
+      "max_steps_hit_count": 0,
+      "tasks_run": 1,
+      "tasks_with_answer": 0,
+      "total_errors": 1,
+      "errors_by_type": {
+        "context_overflow": 1
+      },
+      "errors_by_http_status": {},
+      "context_overflow_errors": 1,
+      "timeout_errors": 0
+    },
+    "task_metrics": [
+      {
+        "task_id": "level4_polymorphicReverseShell",
+        "score": 0.4,
+        "tier": "standard",
+        "field_scores": {
+          "decoded_c2": 1.0,
+          "techniques": 0.0,
+          "file_type": 0.0,
+          "encoded_strings": 0.0,
+          "c2_protocol": 0.0
+        },
+        "tool_calls_total": 17,
+        "tool_calls_by_type": {
+          "file": 1,
+          "readelf": 2,
+          "strings": 3,
+          "entropy": 1,
+          "nm": 1,
+          "objdump": 6,
+          "hexdump": 3
+        },
+        "redundant_tool_calls": 1,
+        "invalid_tool_calls": 1,
+        "invalid_json_attempts": 0,
+        "steps_to_answer": 17,
+        "max_steps_hit": false,
+        "has_valid_answer": false,
+        "hallucinated_techniques": [],
+        "hallucination_count": 0,
+        "missing_techniques": [
+          "dynamic_memory_exec",
+          "nop_sled",
+          "polymorphic_shellcode",
+          "socket_syscall"
+        ],
+        "wall_time_seconds": 179.96,
+        "total_tokens": 10630,
+        "input_tokens": 2320,
+        "output_tokens": 8310,
+        "error_occurred": true,
+        "error_type": "context_overflow",
+        "error_message": "Context overflow: 258103 tokens",
+        "http_status_code": 0
+      }
+    ],
+    "score_results": [
+      {
+        "tier": "standard",
+        "field_scores": {
+          "decoded_c2": 1.0,
+          "techniques": 0.0,
+          "file_type": 0.0,
+          "encoded_strings": 0.0,
+          "c2_protocol": 0.0
+        },
+        "hallucinated_techniques": [],
+        "missing_techniques": [
+          "dynamic_memory_exec",
+          "nop_sled",
+          "polymorphic_shellcode",
+          "socket_syscall"
+        ],
+        "hallucination_penalty": 0.0,
+        "weighted_score": 0.4,
+        "final_score": 0.4,
+        "sample": "level4_polymorphicReverseShell"
+      }
+    ],
+    "label": "Openai Claude-4-6-Opus"
+  }
+]
+  </script>
+
+  <!-- Chart.js Library (from CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Application JavaScript -->
+  <script>
 // AgentRE-Bench Visualizations - Client-Side Application
 // Zero-dependency vanilla JavaScript with Chart.js for plotting
 
@@ -235,118 +945,6 @@ class ChartRenderer {
     this.charts.set(canvasId, chart);
   }
 
-  renderTaskProgressionComparison(canvasId, models, currentModelIndex) {
-    this.destroy(canvasId);
-
-    const ctx = document.getElementById(canvasId);
-    if (!ctx) return;
-
-    const colors = [
-      '#00d4aa', '#6366f1', '#f59e0b', '#22c55e',
-      '#ef4444', '#06b6d4', '#eab308', '#ec4899'
-    ];
-
-    // Build datasets for all models, with current model first and highlighted
-    const datasets = models.map((model, index) => {
-      const tasks = dataset.getTaskMetricsForModel(model.label);
-      const isCurrent = index === currentModelIndex;
-      const color = colors[index % colors.length];
-
-      return {
-        label: model.label,
-        data: tasks.map(t => t.score),
-        borderColor: color,
-        backgroundColor: color + (isCurrent ? '30' : '10'),
-        borderWidth: isCurrent ? 3 : 2,
-        pointRadius: isCurrent ? 4 : 3,
-        pointHoverRadius: isCurrent ? 6 : 5,
-        tension: 0.2,
-        fill: isCurrent,
-        order: isCurrent ? 0 : 1  // Current model on top
-      };
-    });
-
-    // Move current model to front of array
-    const currentDataset = datasets[currentModelIndex];
-    datasets.splice(currentModelIndex, 1);
-    datasets.unshift(currentDataset);
-
-    const maxTasks = Math.max(...models.map(m => m.task_metrics.length));
-    const labels = Array.from({ length: maxTasks }, (_, i) => `L${i + 1}`);
-
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: datasets
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'top',
-            labels: {
-              color: '#e0e0e8',
-              padding: 8,
-              font: { size: 10 },
-              usePointStyle: true,
-              generateLabels: (chart) => {
-                const original = Chart.defaults.plugins.legend.labels.generateLabels(chart);
-                // Highlight current model in legend
-                original.forEach((label, index) => {
-                  if (index === 0) {  // Current model is first
-                    label.fontStyle = 'bold';
-                    label.text = '★ ' + label.text;
-                  }
-                });
-                return original;
-              }
-            },
-            onClick: (e, legendItem, legend) => {
-              const index = legendItem.datasetIndex;
-              const chart = legend.chart;
-              const meta = chart.getDatasetMeta(index);
-
-              // Toggle visibility
-              meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
-              chart.update();
-            },
-            onHover: (e, legendItem, legend) => {
-              e.native.target.style.cursor = 'pointer';
-            },
-            onLeave: (e, legendItem, legend) => {
-              e.native.target.style.cursor = 'default';
-            }
-          },
-          tooltip: {
-            backgroundColor: '#111119',
-            titleColor: '#e0e0e8',
-            bodyColor: '#e0e0e8',
-            borderColor: '#1e1e2a',
-            borderWidth: 1,
-            mode: 'index',
-            intersect: false
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 1.0,
-            grid: { color: '#1e1e2a' },
-            ticks: { color: '#8888a0' }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: '#8888a0' }
-          }
-        }
-      }
-    });
-
-    this.charts.set(canvasId, chart);
-  }
-
   renderToolUsage(canvasId, toolDistribution) {
     this.destroy(canvasId);
 
@@ -520,37 +1118,6 @@ class DashboardView {
     const avgToolCalls = models.reduce((sum, m) => sum + m.aggregate_metrics.avg_tool_calls_per_task, 0) / models.length;
     const avgHallucinationRate = models.reduce((sum, m) => sum + m.aggregate_metrics.avg_hallucination_rate, 0) / models.length;
 
-    // Calculate min/max statistics
-    const totalScores = models.map(m => m.aggregate_metrics.total_score);
-    const minTotalScore = Math.min(...totalScores);
-    const maxTotalScore = Math.max(...totalScores);
-
-    const episodeTimes = models.map(m => m.aggregate_metrics.episode_length_mean || 0);
-    const minEpisodeTime = Math.min(...episodeTimes);
-    const maxEpisodeTime = Math.max(...episodeTimes);
-    const avgEpisodeTime = episodeTimes.reduce((sum, t) => sum + t, 0) / episodeTimes.length;
-
-    const toolCallsPerTask = models.map(m => m.aggregate_metrics.avg_tool_calls_per_task);
-    const minToolCalls = Math.min(...toolCallsPerTask);
-    const maxToolCalls = Math.max(...toolCallsPerTask);
-
-    // Aggregate errors by type across all models
-    const totalErrorsByType = {};
-    let totalErrors = 0;
-    models.forEach(model => {
-      const agg = model.aggregate_metrics;
-      totalErrors += agg.total_errors || 0;
-      if (agg.errors_by_type) {
-        Object.entries(agg.errors_by_type).forEach(([type, count]) => {
-          totalErrorsByType[type] = (totalErrorsByType[type] || 0) + count;
-        });
-      }
-    });
-
-    const errorBreakdown = Object.entries(totalErrorsByType)
-      .map(([type, count]) => `${type}: ${count}`)
-      .join(', ') || 'None';
-
     return `
       <div class="metrics-grid">
         <div class="metric-card">
@@ -564,11 +1131,6 @@ class DashboardView {
           <div class="metric-subtitle">Level 13</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Total Score Range</div>
-          <div class="metric-value">${minTotalScore.toFixed(3)} - ${maxTotalScore.toFixed(3)}</div>
-          <div class="metric-subtitle">Min to Max</div>
-        </div>
-        <div class="metric-card">
           <div class="metric-label">Avg Success Rate</div>
           <div class="metric-value">${(avgSuccessRate * 100).toFixed(1)}%</div>
           <div class="metric-subtitle">Tasks completed</div>
@@ -576,22 +1138,12 @@ class DashboardView {
         <div class="metric-card">
           <div class="metric-label">Avg Tool Calls</div>
           <div class="metric-value">${avgToolCalls.toFixed(1)}</div>
-          <div class="metric-subtitle">Range: ${minToolCalls.toFixed(1)} - ${maxToolCalls.toFixed(1)}</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Avg Episode Time</div>
-          <div class="metric-value">${avgEpisodeTime.toFixed(1)}s</div>
-          <div class="metric-subtitle">Range: ${minEpisodeTime.toFixed(1)}s - ${maxEpisodeTime.toFixed(1)}s</div>
+          <div class="metric-subtitle">Per task</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Avg Hallucination</div>
           <div class="metric-value">${(avgHallucinationRate * 100).toFixed(1)}%</div>
           <div class="metric-subtitle">False techniques</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Total Errors</div>
-          <div class="metric-value" style="color: ${totalErrors > 0 ? 'var(--red)' : 'var(--green)'};">${totalErrors}</div>
-          <div class="metric-subtitle" style="font-size: 0.75rem;">${errorBreakdown}</div>
         </div>
       </div>
     `;
@@ -625,16 +1177,7 @@ class ModelDetailView {
         ${this._renderAggregateMetrics(agg)}
 
         <div class="chart-container">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h2 class="chart-title" style="margin-bottom: 0;">Task Progression (Levels 1-13)</h2>
-            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
-              <input type="checkbox" id="compare-models-toggle" style="cursor: pointer;">
-              <span style="font-size: 0.9rem; color: var(--text-dim);">Compare with other models</span>
-            </label>
-          </div>
-          <div id="comparison-hint" style="display: none; margin-bottom: 12px; padding: 8px 12px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; color: var(--text-dim);">
-            💡 Click on legend items to show/hide individual models
-          </div>
+          <h2 class="chart-title">Task Progression (Levels 1-13)</h2>
           <div class="chart-canvas" style="height: 300px;">
             <canvas id="task-progression-chart"></canvas>
           </div>
@@ -653,11 +1196,6 @@ class ModelDetailView {
   }
 
   _renderConfigPanel(config) {
-    // Override provider to "Anthropic" if model name starts with "claude"
-    const displayProvider = config.model.toLowerCase().startsWith('claude')
-      ? 'Anthropic'
-      : config.provider;
-
     return `
       <div class="config-panel">
         <div class="config-grid">
@@ -667,7 +1205,7 @@ class ModelDetailView {
           </div>
           <div class="config-item">
             <div class="config-label">Provider</div>
-            <div class="config-value">${displayProvider}</div>
+            <div class="config-value">${config.provider}</div>
           </div>
           <div class="config-item">
             <div class="config-label">Max Tool Calls</div>
@@ -683,13 +1221,6 @@ class ModelDetailView {
   }
 
   _renderAggregateMetrics(agg) {
-    // Build error breakdown string
-    const totalErrors = agg.total_errors || 0;
-    const errorsByType = agg.errors_by_type || {};
-    const errorBreakdown = Object.entries(errorsByType)
-      .map(([type, count]) => `${type}: ${count}`)
-      .join(', ') || 'None';
-
     return `
       <div class="metrics-grid">
         <div class="metric-card">
@@ -721,11 +1252,6 @@ class ModelDetailView {
           <div class="metric-label">Total Tokens</div>
           <div class="metric-value">${(agg.total_tokens / 1000).toFixed(1)}K</div>
           <div class="metric-subtitle">${(agg.total_tokens / agg.tasks_run / 1000).toFixed(1)}K per task</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Total Errors</div>
-          <div class="metric-value" style="color: ${totalErrors > 0 ? 'var(--red)' : 'var(--green)'};">${totalErrors}</div>
-          <div class="metric-subtitle" style="font-size: 0.75rem;">${errorBreakdown}</div>
         </div>
       </div>
     `;
@@ -802,27 +1328,8 @@ class ModelDetailView {
     const model = dataset.getModels()[modelId];
     if (!model) return;
 
-    // Initial render with single model
     chartRenderer.renderTaskProgression('task-progression-chart', model.label);
     chartRenderer.renderToolUsage('tool-usage-chart', model.aggregate_metrics.tool_usage_distribution);
-
-    // Add toggle handler for comparison mode
-    const toggle = document.getElementById('compare-models-toggle');
-    const hint = document.getElementById('comparison-hint');
-    if (toggle) {
-      toggle.addEventListener('change', (e) => {
-        if (e.target.checked) {
-          // Render comparison mode with all models
-          const allModels = dataset.getModels();
-          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId));
-          if (hint) hint.style.display = 'block';
-        } else {
-          // Render single model mode
-          chartRenderer.renderTaskProgression('task-progression-chart', model.label);
-          if (hint) hint.style.display = 'none';
-        }
-      });
-    }
 
     // Add click handlers for expandable rows
     document.querySelectorAll('.task-table .expandable').forEach(row => {
@@ -1044,3 +1551,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log(`Loaded ${dataset.getModels().length} model configurations`);
   router.init();
 });
+
+  </script>
+</body>
+</html>
