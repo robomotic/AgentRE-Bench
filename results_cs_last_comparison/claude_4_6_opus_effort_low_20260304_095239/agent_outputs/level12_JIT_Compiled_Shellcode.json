@@ -1,0 +1,29 @@
+{
+  "anti_analysis": [
+    "jit_compiled_shellcode",
+    "runtime_code_generation"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "c2_port": "4444 (0x115c)",
+    "jit_template": "Shellcode template copied to RWX mmap region and patched with IP/port at runtime",
+    "shell": "/bin/sh"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "JIT runtime patching",
+    "key": "IP and port bytes patched into shellcode template via memcpy from rodata offsets 0x477010 and 0x477015",
+    "key_storage": "rodata section"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "jit_shellcode_compilation",
+    "mmap_rwx",
+    "socket_connect",
+    "dup2_redirect",
+    "execve_shell",
+    "runtime_code_patching"
+  ]
+}

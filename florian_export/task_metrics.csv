@@ -1,0 +1,66 @@
+model_label,task_id,level,difficulty,score,tier,decoded_c2_score,techniques_score,file_type_score,encoded_strings_score,c2_protocol_score,tool_calls_total,steps_to_answer,wall_time_seconds,total_tokens,input_tokens,output_tokens,has_valid_answer,max_steps_hit,redundant_tool_calls,invalid_tool_calls,hallucination_count,error_occurred,error_type,error_message
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level1_TCPServer,1,,0.45,standard,1.0,0.0,1.0,1.0,1.0,7,7,53.65,4020,670,3350,True,False,0,0,5,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level2_XorEncodedStrings,2,,0.7,standard,1.0,0.3333333333333333,1.0,1.0,1.0,9,9,127.18,10209,694,9515,True,False,0,1,2,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level3_anti-debugging_reverseShell,3,,0.5,standard,1.0,0.16666666666666666,1.0,1.0,1.0,15,15,144.63,6106,721,5385,True,False,1,2,5,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level4_polymorphicReverseShell,4,,0.0,standard,0.0,0.0,1.0,0.0,1.0,16,16,170.32,6629,725,5904,True,False,2,1,8,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level5_MultistageReverseShell,5,,0.6857,standard,1.0,0.2857142857142857,1.0,1.0,1.0,19,19,166.03,7943,747,7196,True,False,4,2,2,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level6_ICMP_CovertChannelShell,6,,0.325,standard,1.0,0.08333333333333333,1.0,1.0,1.0,12,12,97.41,5081,704,4377,True,False,0,1,8,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level7_DNS_TunnelReverseShell,7,,0.11,standard,0.0,0.2,1.0,1.0,1.0,7,7,55.4,2498,674,1824,True,False,0,0,5,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level8_Process_hollowing_reverse_shell,8,,0.4818,standard,1.0,0.2727272727272727,1.0,1.0,1.0,11,11,146.61,8256,699,7557,True,False,0,1,6,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level9_SharedObjectInjectionReverseShell,9,,0.4,standard,1.0,0.16666666666666666,0.0,1.0,1.0,11,11,102.91,5740,683,5057,True,False,0,0,5,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level10_fully_obfuscated_AES_Encrypted_Shell,10,,0.0,standard,0.0,0.0,1.0,1.0,1.0,20,20,142.63,6144,719,5425,True,False,1,2,7,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level11_ForkBombReverseShell,11,,0.56,standard,1.0,0.2,1.0,1.0,1.0,14,14,111.95,7551,707,6844,True,False,0,2,4,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level12_JIT_Compiled_Shellcode,12,,0.4462,standard,1.0,0.15384615384615385,1.0,1.0,1.0,10,10,70.21,4016,691,3325,True,False,0,1,6,False,,
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",level13_MetamorphicDropper,13,,0.0826,bonus,0.0,0.21739130434782608,1.0,1.0,0.0,15,15,127.18,7113,816,6297,True,False,1,2,5,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level1_TCPServer,1,,1.0,standard,1.0,1.0,1.0,1.0,1.0,8,8,50.06,1617,30,1587,True,False,0,0,0,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level2_XorEncodedStrings,2,,0.83,standard,1.0,0.6,1.0,1.0,1.0,8,8,114.12,8712,2299,6413,True,False,0,0,1,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level3_anti-debugging_reverseShell,3,,0.55,standard,1.0,0.3333333333333333,1.0,1.0,1.0,8,8,62.36,5069,2302,2767,True,False,0,0,5,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level4_polymorphicReverseShell,4,,0.4,standard,1.0,0.0,0.0,0.0,0.0,13,13,113.65,7203,2311,4892,False,False,0,0,0,True,context_overflow,Context overflow: 231773 tokens
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level5_MultistageReverseShell,5,,0.5333,standard,1.0,0.1111111111111111,1.0,1.0,1.0,15,15,88.66,5621,2318,3303,True,False,0,2,4,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level6_ICMP_CovertChannelShell,6,,0.6357,standard,1.0,0.2857142857142857,1.0,1.0,1.0,11,11,70.0,5062,2313,2749,True,False,0,0,3,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level7_DNS_TunnelReverseShell,7,,0.01,standard,0.0,0.2,1.0,0.0,1.0,9,9,58.74,4747,2304,2443,True,False,0,0,5,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level8_Process_hollowing_reverse_shell,8,,0.5625,standard,1.0,0.375,1.0,0.0,1.0,10,10,85.15,3081,30,3051,True,False,1,1,3,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level9_SharedObjectInjectionReverseShell,9,,0.5818,standard,1.0,0.2727272727272727,1.0,1.0,1.0,7,7,31.36,1081,9,1072,True,False,0,0,4,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level10_fully_obfuscated_AES_Encrypted_Shell,10,,0.4,standard,1.0,0.0,0.0,0.0,0.0,15,15,365.96,4533,2327,2206,False,False,0,2,0,True,timeout,The read operation timed out
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level11_ForkBombReverseShell,11,,0.75,standard,1.0,0.5,1.0,1.0,1.0,11,11,66.09,4774,2300,2474,True,False,0,1,2,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level12_JIT_Compiled_Shellcode,12,,0.5545,standard,1.0,0.18181818181818182,1.0,1.0,1.0,20,20,296.8,14720,2357,12363,True,False,0,1,4,False,,
+"Claude 4 6 Opus (effort: high, 2026-03-04)",level13_MetamorphicDropper,13,,0.0,bonus,0.0,0.0,0.0,0.0,0.0,18,18,118.19,6560,2439,4121,False,False,5,1,0,True,context_overflow,Context overflow: 210975 tokens
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level1_TCPServer,1,,1.0,standard,1.0,1.0,1.0,1.0,1.0,10,10,62.14,4137,2306,1831,True,False,1,0,0,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level2_XorEncodedStrings,2,,0.75,standard,1.0,0.5,1.0,1.0,1.0,8,8,99.09,7776,2299,5477,True,False,0,0,2,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level3_anti-debugging_reverseShell,3,,0.55,standard,1.0,0.3333333333333333,1.0,1.0,1.0,8,8,63.53,4882,2301,2581,True,False,0,0,5,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level4_polymorphicReverseShell,4,,0.4,standard,1.0,0.0,0.0,0.0,0.0,11,11,39.48,3319,2301,1018,False,False,1,0,0,True,context_overflow,Context overflow: 217154 tokens
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level5_MultistageReverseShell,5,,0.0,standard,0.0,0.0,0.0,0.0,0.0,12,12,58.95,3941,2300,1641,False,False,1,0,0,True,context_overflow,Context overflow: 209011 tokens
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level6_ICMP_CovertChannelShell,6,,0.4833,standard,1.0,0.1111111111111111,1.0,1.0,1.0,11,11,71.37,2283,39,2244,True,False,0,0,5,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level7_DNS_TunnelReverseShell,7,,0.0667,standard,0.0,0.2222222222222222,1.0,0.0,1.0,9,9,58.08,4420,2304,2116,True,False,0,0,4,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level8_Process_hollowing_reverse_shell,8,,0.44,standard,1.0,0.3,1.0,0.0,1.0,11,11,201.43,12519,2311,10208,True,False,0,0,5,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level9_SharedObjectInjectionReverseShell,9,,0.6091,standard,1.0,0.36363636363636365,1.0,1.0,1.0,9,9,32.4,4053,2293,1760,True,False,0,0,4,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level10_fully_obfuscated_AES_Encrypted_Shell,10,,0.4,standard,1.0,0.0,0.0,0.0,0.0,14,14,349.39,3922,2316,1606,False,False,0,2,0,True,timeout,The read operation timed out
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level11_ForkBombReverseShell,11,,0.75,standard,1.0,0.5,1.0,1.0,1.0,11,11,68.62,4318,2303,2015,True,False,0,1,2,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level12_JIT_Compiled_Shellcode,12,,0.54,standard,1.0,0.3,1.0,0.0,1.0,19,19,214.8,7578,2348,5230,True,False,4,2,3,False,,
+"Claude 4 6 Opus (effort: low, 2026-03-04)",level13_MetamorphicDropper,13,,0.0,bonus,0.0,0.0,0.0,0.0,0.0,19,19,130.14,5987,2440,3547,False,False,5,3,0,True,context_overflow,Context overflow: 224585 tokens
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level1_TCPServer,1,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.5,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level2_XorEncodedStrings,2,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.49,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level3_anti-debugging_reverseShell,3,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.48,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level4_polymorphicReverseShell,4,,0.4,standard,1.0,0.0,0.0,0.0,0.0,0,0,0.48,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level5_MultistageReverseShell,5,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.48,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level6_ICMP_CovertChannelShell,6,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.52,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level7_DNS_TunnelReverseShell,7,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.48,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level8_Process_hollowing_reverse_shell,8,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.48,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level9_SharedObjectInjectionReverseShell,9,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.49,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level10_fully_obfuscated_AES_Encrypted_Shell,10,,0.4,standard,1.0,0.0,0.0,0.0,0.0,0,0,0.49,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level11_ForkBombReverseShell,11,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.48,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level12_JIT_Compiled_Shellcode,12,,0.0,standard,0.0,0.0,0.0,0.0,0.0,0,0,0.47,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: max, 2026-03-04)",level13_MetamorphicDropper,13,,0.0,bonus,0.0,0.0,0.0,0.0,0.0,0,0,0.48,0,0,0,False,False,0,0,0,True,http_error,HTTP 500: failed to execute the call: invalid reasoning_effort provided: max
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level1_TCPServer,1,,1.0,standard,1.0,1.0,1.0,1.0,1.0,10,10,77.08,4591,2305,2286,True,False,0,1,0,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level2_XorEncodedStrings,2,,0.75,standard,1.0,0.5,1.0,1.0,1.0,7,7,46.99,4984,2290,2694,True,False,0,0,2,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level3_anti-debugging_reverseShell,3,,0.55,standard,1.0,0.3333333333333333,1.0,1.0,1.0,9,9,60.66,5161,2300,2861,True,False,0,0,5,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level4_polymorphicReverseShell,4,,0.4,standard,1.0,0.0,0.0,0.0,0.0,17,17,163.69,9697,2329,7368,False,False,2,0,0,True,context_overflow,Context overflow: 250301 tokens
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level5_MultistageReverseShell,5,,0.5333,standard,1.0,0.1111111111111111,1.0,1.0,1.0,11,11,72.3,4999,2311,2688,True,False,1,0,4,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level6_ICMP_CovertChannelShell,6,,0.5929,standard,1.0,0.14285714285714285,1.0,1.0,1.0,11,11,57.25,4286,2314,1972,True,False,1,1,3,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level7_DNS_TunnelReverseShell,7,,0.0667,standard,0.0,0.2222222222222222,1.0,0.0,1.0,11,11,65.5,4708,2313,2395,True,False,0,0,4,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level8_Process_hollowing_reverse_shell,8,,0.44,standard,1.0,0.3,1.0,0.0,1.0,10,10,152.99,9730,2311,7419,True,False,0,1,5,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level9_SharedObjectInjectionReverseShell,9,,0.525,standard,1.0,0.25,1.0,1.0,1.0,9,9,59.17,8457,6043,2414,True,False,1,0,5,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level10_fully_obfuscated_AES_Encrypted_Shell,10,,0.4,standard,1.0,0.0,0.0,0.0,0.0,13,13,396.86,6367,2316,4051,False,False,0,2,0,True,timeout,The read operation timed out
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level11_ForkBombReverseShell,11,,0.75,standard,1.0,0.5,1.0,1.0,1.0,9,9,56.88,4546,2302,2244,True,False,0,1,2,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level12_JIT_Compiled_Shellcode,12,,0.5545,standard,1.0,0.18181818181818182,1.0,1.0,1.0,14,14,157.39,9351,2330,7021,True,False,0,2,4,False,,
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",level13_MetamorphicDropper,13,,0.0,bonus,0.0,0.0,0.0,0.0,0.0,18,18,124.63,6744,2439,4305,False,False,5,3,0,True,context_overflow,Context overflow: 217061 tokens

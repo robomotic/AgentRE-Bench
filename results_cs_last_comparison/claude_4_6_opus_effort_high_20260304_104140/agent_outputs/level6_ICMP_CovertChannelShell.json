@@ -1,0 +1,21 @@
+{
+  "anti_analysis": [],
+  "c2_protocol": "ICMP",
+  "decoded_c2": "192.168.1.100",
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "icmp_code": "0",
+    "icmp_payload": "whoami",
+    "icmp_type": "8 (Echo Request)",
+    "sleep_interval": "5 seconds"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "raw_socket",
+    "icmp_covert_channel",
+    "socket_sendto",
+    "icmp_echo_request",
+    "shell_command_embedding"
+  ]
+}

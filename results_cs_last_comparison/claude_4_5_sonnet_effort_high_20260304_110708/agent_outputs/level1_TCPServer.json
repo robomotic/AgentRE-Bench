@@ -1,0 +1,13 @@
+{
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_create",
+    "inet_pton",
+    "connect",
+    "dup2",
+    "execve"
+  ]
+}

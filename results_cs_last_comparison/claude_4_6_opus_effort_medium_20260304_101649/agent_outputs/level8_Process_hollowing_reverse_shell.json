@@ -1,0 +1,36 @@
+{
+  "anti_analysis": [
+    "process_hollowing_via_ptrace"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "127.0.0.1:4444",
+  "decoded_strings": {
+    "execl_args": "sleep 1000",
+    "hollow_target": "/bin/sleep",
+    "ptrace_detach": "PTRACE_DETACH (0x11)",
+    "ptrace_getregs": "PTRACE_GETREGS (0xc)",
+    "ptrace_poketext": "PTRACE_POKETEXT (0x4)",
+    "ptrace_setregs": "PTRACE_SETREGS (0xd)",
+    "ptrace_traceme": "PTRACE_TRACEME (0x0)",
+    "shell": "/bin//sh",
+    "shellcode_ip": "127.0.0.1",
+    "shellcode_port": "4444"
+  },
+  "encoded_strings": false,
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "N/A",
+    "key_storage": "N/A - shellcode is embedded as raw bytes via movabs instructions"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "process_hollowing",
+    "socket_connect",
+    "reverse_shell",
+    "ptrace_injection",
+    "shellcode_injection",
+    "dup2_redirect",
+    "fork_exec",
+    "execve_shell"
+  ]
+}

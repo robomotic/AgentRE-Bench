@@ -1,0 +1,16 @@
+{
+  "c2_protocol": "TCP",
+  "decoded_c2": "127.0.0.1:4444",
+  "encoded_strings": true,
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_connect",
+    "polymorphic_code",
+    "nop_sled_generation",
+    "dynamic_shellcode_generation",
+    "syscall_socket",
+    "syscall_connect",
+    "syscall_dup2",
+    "random_padding"
+  ]
+}

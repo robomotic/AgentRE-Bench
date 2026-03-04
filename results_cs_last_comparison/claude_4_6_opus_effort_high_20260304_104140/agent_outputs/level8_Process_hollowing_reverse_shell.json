@@ -1,0 +1,32 @@
+{
+  "anti_analysis": [],
+  "c2_protocol": "TCP",
+  "decoded_c2": "127.0.0.1:4444",
+  "decoded_strings": {
+    "ptrace_detach": "PTRACE_DETACH (0x11)",
+    "ptrace_getregs": "PTRACE_GETREGS (0xc)",
+    "ptrace_poketext": "PTRACE_POKETEXT (0x4) - writes 0x6e bytes of shellcode",
+    "ptrace_setregs": "PTRACE_SETREGS (0xd) - modifies RIP",
+    "ptrace_traceme": "PTRACE_TRACEME (child)",
+    "shellcode_connect": "connect(127.0.0.1:4444)",
+    "shellcode_dup2": "dup2 loop for fd 2,1,0",
+    "shellcode_execve": "execve(/bin//sh)",
+    "shellcode_socket": "socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)",
+    "target_process": "/bin/sleep"
+  },
+  "encoded_strings": false,
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "N/A",
+    "key_storage": "N/A"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "process_hollowing",
+    "ptrace_injection",
+    "socket_connect",
+    "reverse_shell",
+    "shellcode_injection",
+    "fork_exec"
+  ]
+}

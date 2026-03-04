@@ -1,0 +1,17 @@
+{
+  "c2_protocol": "TCP",
+  "decoded_c2": "127.0.0.1:4444",
+  "encoded_strings": true,
+  "file_type": "ELF64",
+  "techniques": [
+    "process_hollowing",
+    "ptrace_injection",
+    "fork_and_trace",
+    "shellcode_injection",
+    "register_manipulation",
+    "execl_traceme",
+    "reverse_shell",
+    "socket_creation",
+    "dup2_redirection"
+  ]
+}

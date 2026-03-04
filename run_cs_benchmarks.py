@@ -13,6 +13,7 @@ Note: max effort is only available on Opus 4.6
 
 import subprocess
 import sys
+import argparse
 from pathlib import Path
 from datetime import datetime
 
@@ -35,7 +36,7 @@ TASK_FILTER = None  # Set to None for --all, or a task_id string for --task
 
 # Additional settings
 MAX_TOOL_CALLS = 25
-MAX_TOKENS = 4096
+MAX_TOKENS = 8192
 VERBOSE = False  # Set to True to see detailed agent reasoning during runs
 
 
@@ -89,6 +90,31 @@ def run_benchmark(model: str, effort: str, output_reasoning: str, description: s
 
 
 def main():
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(
+        description='Run CS Benchmarks comparing Claude models with different reasoning efforts'
+    )
+    parser.add_argument(
+        '--report',
+        type=Path,
+        default=Path(__file__).parent / "results_cs_comparison",
+        help='Base directory for benchmark results (default: results_cs_comparison/)'
+    )
+    parser.add_argument(
+        '--all',
+        action='store_true',
+        help='Run all tasks (ignored, kept for compatibility)'
+    )
+    parser.add_argument(
+        '--provider',
+        type=str,
+        default='openai',
+        help='Provider to use (ignored, kept for compatibility)'
+    )
+
+    args = parser.parse_args()
+    results_base_dir = args.report
+
     print("""
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                          CS Benchmarks - Claude Comparison                    ║
@@ -98,8 +124,7 @@ def main():
 """)
 
     # Create base results directory
-    results_base_dir = Path(__file__).parent / "results_cs_comparison"
-    results_base_dir.mkdir(exist_ok=True)
+    results_base_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"Base results directory: {results_base_dir}")
     print(f"Task filter: {'All tasks' if TASK_FILTER is None else TASK_FILTER}")

@@ -1,0 +1,28 @@
+{
+  "anti_analysis": [
+    "jit_compilation_runtime_code_generation"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "c2_port": "4444",
+    "jit_template": "socket(AF_INET, SOCK_STREAM, IPPROTO_TCP) via syscall 41",
+    "shell": "/bin/sh"
+  },
+  "encoded_strings": false,
+  "encryption_details": {
+    "algorithm": "none",
+    "key": "N/A",
+    "key_storage": "N/A - shellcode bytes stored as raw machine code in .data section jit_template, IP/port in plaintext .rodata"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "jit_shellcode",
+    "mmap_rwx",
+    "socket_connect",
+    "dup2_stdin_stdout_stderr",
+    "execve_shell",
+    "raw_syscall"
+  ]
+}

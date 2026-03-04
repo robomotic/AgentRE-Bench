@@ -1,0 +1,12 @@
+{
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "encoded_strings": true,
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_connect",
+    "xor_encoding",
+    "multistage_payload",
+    "dynamic_code_execution"
+  ]
+}

@@ -1,0 +1,40 @@
+model_label,tool_name,count,percentage
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",xxd,42,25.301204819277107
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",objdump,29,17.46987951807229
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",hexdump,28,16.867469879518072
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",strings,17,10.240963855421686
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",readelf,15,9.036144578313253
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",file,13,7.83132530120482
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",final_answer,13,7.83132530120482
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",nm,8,4.819277108433735
+"Claude 4 5 Sonnet (effort: high, 2026-03-04)",entropy,1,0.6024096385542169
+"Claude 4 6 Opus (effort: high, 2026-03-04)",objdump,35,22.875816993464053
+"Claude 4 6 Opus (effort: high, 2026-03-04)",readelf,25,16.33986928104575
+"Claude 4 6 Opus (effort: high, 2026-03-04)",strings,19,12.418300653594772
+"Claude 4 6 Opus (effort: high, 2026-03-04)",xxd,18,11.76470588235294
+"Claude 4 6 Opus (effort: high, 2026-03-04)",nm,15,9.803921568627452
+"Claude 4 6 Opus (effort: high, 2026-03-04)",file,13,8.49673202614379
+"Claude 4 6 Opus (effort: high, 2026-03-04)",hexdump,12,7.8431372549019605
+"Claude 4 6 Opus (effort: high, 2026-03-04)",final_answer,10,6.535947712418301
+"Claude 4 6 Opus (effort: high, 2026-03-04)",entropy,5,3.2679738562091507
+"Claude 4 6 Opus (effort: high, 2026-03-04)","nm"" path=""/workspace/level8_Process_hollowing_reverse_shell",1,0.6535947712418301
+"Claude 4 6 Opus (effort: low, 2026-03-04)",objdump,35,23.026315789473685
+"Claude 4 6 Opus (effort: low, 2026-03-04)",readelf,25,16.447368421052634
+"Claude 4 6 Opus (effort: low, 2026-03-04)",strings,25,16.447368421052634
+"Claude 4 6 Opus (effort: low, 2026-03-04)",hexdump,21,13.815789473684212
+"Claude 4 6 Opus (effort: low, 2026-03-04)",nm,14,9.210526315789473
+"Claude 4 6 Opus (effort: low, 2026-03-04)",file,13,8.552631578947368
+"Claude 4 6 Opus (effort: low, 2026-03-04)",final_answer,9,5.921052631578947
+"Claude 4 6 Opus (effort: low, 2026-03-04)",xxd,5,3.289473684210526
+"Claude 4 6 Opus (effort: low, 2026-03-04)",entropy,4,2.631578947368421
+"Claude 4 6 Opus (effort: low, 2026-03-04)","nm"" path=""/workspace/level13_MetamorphicDropper",1,0.6578947368421052
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",objdump,38,25.503355704697988
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",strings,23,15.436241610738255
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",readelf,21,14.093959731543624
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",hexdump,18,12.080536912751679
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",nm,15,10.06711409395973
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",file,13,8.724832214765101
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",final_answer,10,6.7114093959731544
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",xxd,8,5.369127516778524
+"Claude 4 6 Opus (effort: medium, 2026-03-04)",entropy,2,1.342281879194631
+"Claude 4 6 Opus (effort: medium, 2026-03-04)","nm"" path=""/workspace/level13_MetamorphicDropper",1,0.6711409395973155

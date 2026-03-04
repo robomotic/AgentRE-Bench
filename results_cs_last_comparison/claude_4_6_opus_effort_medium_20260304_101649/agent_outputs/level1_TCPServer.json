@@ -1,0 +1,16 @@
+{
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "0x477010": "192.168.1.100",
+    "0x47701e": "/bin/sh",
+    "port": "4444 (0x115c)"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_connect",
+    "dup2_redirect",
+    "execve_shell"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "anti_analysis": [
+    "anti_debug_ptrace",
+    "env_check_ld_preload",
+    "env_check_ld_library_path",
+    "delay_execution"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "c2_port": "4444 (0x115c)",
+    "env_check_1": "LD_PRELOAD",
+    "env_check_2": "LD_LIBRARY_PATH",
+    "shell": "/bin/sh"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_connect",
+    "anti_debug_ptrace",
+    "env_check_ld_preload",
+    "env_check_ld_library_path",
+    "delay_execution",
+    "process_forking",
+    "dup2_redirect",
+    "execve_shell",
+    "reverse_shell"
+  ]
+}

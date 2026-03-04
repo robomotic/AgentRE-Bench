@@ -1,0 +1,27 @@
+{
+  "anti_analysis": [
+    "environment_variable_check_LD_AUDIT",
+    "environment_variable_check_LD_PRELOAD"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "/bin/sh": "Shell executed via execve",
+    "0x115c": "C2 port 4444 (plaintext)",
+    "192.168.1.100": "C2 IP address (plaintext)",
+    "LD_AUDIT": "Environment variable checked to prevent recursive injection",
+    "LD_PRELOAD": "Environment variable checked to prevent recursive injection",
+    "puts": "Hooked libc function resolved via dlsym(RTLD_NEXT)"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64-SO",
+  "techniques": [
+    "shared_object_injection",
+    "function_hooking",
+    "socket_connect",
+    "dup2_redirection",
+    "execve_shell",
+    "environment_check",
+    "dlsym_resolution"
+  ]
+}

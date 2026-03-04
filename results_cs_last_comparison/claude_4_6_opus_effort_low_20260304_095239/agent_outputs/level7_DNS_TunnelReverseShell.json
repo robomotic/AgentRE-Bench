@@ -1,0 +1,23 @@
+{
+  "anti_analysis": [],
+  "c2_protocol": "DNS",
+  "decoded_c2": "cmd.attacker.com",
+  "decoded_strings": {
+    "beacon_string": "beacon",
+    "c2_command_domain": "cmd.attacker.com",
+    "exfil_domain_pattern": "%s.%s.attacker.com",
+    "hex_format": "%02x",
+    "popen_mode": "r",
+    "shell_command": "ls"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "dns_tunneling",
+    "dns_exfiltration",
+    "hex_encoding",
+    "command_execution",
+    "gethostbyname_resolution",
+    "popen_shell"
+  ]
+}

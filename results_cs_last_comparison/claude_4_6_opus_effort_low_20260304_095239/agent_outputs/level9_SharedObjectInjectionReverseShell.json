@@ -1,0 +1,27 @@
+{
+  "anti_analysis": [
+    "ld_preload_detection",
+    "ld_audit_detection"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "0x2000": "LD_AUDIT",
+    "0x2009": "LD_PRELOAD",
+    "0x2014": "192.168.1.100",
+    "0x2022": "/bin/sh",
+    "0x202a": "puts"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64-SO",
+  "techniques": [
+    "shared_object_injection",
+    "function_hooking",
+    "socket_connect",
+    "reverse_shell",
+    "dup2_redirect",
+    "execve_shell",
+    "dlsym_resolution",
+    "environment_check"
+  ]
+}

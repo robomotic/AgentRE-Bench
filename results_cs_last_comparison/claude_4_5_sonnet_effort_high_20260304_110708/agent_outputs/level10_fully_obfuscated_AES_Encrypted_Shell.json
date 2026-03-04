@@ -1,0 +1,24 @@
+{
+  "anti_analysis": [
+    "LD_PRELOAD check",
+    "LD_LIBRARY_PATH check"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": "deadbeefcafebadeadbeefcafebabe",
+    "key_storage": "embedded in binary at 0x4a3110"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "xor_encoding",
+    "environment_variable_checks",
+    "syscall_obfuscation",
+    "mmap_executable_memory",
+    "anti_debug_ld_preload",
+    "shellcode_execution",
+    "socket_connect"
+  ]
+}

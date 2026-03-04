@@ -1,0 +1,15 @@
+{
+  "c2_protocol": "DNS",
+  "decoded_c2": "cmd.attacker.com",
+  "encoded_strings": true,
+  "file_type": "ELF64",
+  "techniques": [
+    "dns_tunneling",
+    "hex_encoding",
+    "data_exfiltration_dns",
+    "shell_command_execution",
+    "gethostbyname",
+    "popen_shell",
+    "dns_beacon"
+  ]
+}

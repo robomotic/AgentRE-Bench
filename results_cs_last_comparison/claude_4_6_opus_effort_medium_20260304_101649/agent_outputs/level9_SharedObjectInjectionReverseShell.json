@@ -1,0 +1,28 @@
+{
+  "anti_analysis": [
+    "ld_preload_detection",
+    "ld_audit_detection"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "port_hex": "0x115c = 4444",
+    "rodata_0x2000": "LD_AUDIT",
+    "rodata_0x2009": "LD_PRELOAD",
+    "rodata_0x2014": "192.168.1.100",
+    "rodata_0x2022": "/bin/sh",
+    "rodata_0x202a": "puts"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64-SO",
+  "techniques": [
+    "shared_object_injection",
+    "function_hooking",
+    "socket_connect",
+    "reverse_shell",
+    "dup2_stdio_redirect",
+    "execve_shell",
+    "dlsym_resolution",
+    "ld_preload_evasion"
+  ]
+}

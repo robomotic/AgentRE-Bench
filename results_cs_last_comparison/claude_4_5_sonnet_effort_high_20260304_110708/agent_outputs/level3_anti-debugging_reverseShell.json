@@ -1,0 +1,21 @@
+{
+  "anti_analysis": [
+    "ptrace_traceme",
+    "ld_preload_detection",
+    "ld_library_path_detection",
+    "random_sleep_delay"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "anti_debug_ptrace",
+    "env_var_check",
+    "delay_execution",
+    "fork",
+    "socket_connect",
+    "dup2",
+    "execve"
+  ]
+}

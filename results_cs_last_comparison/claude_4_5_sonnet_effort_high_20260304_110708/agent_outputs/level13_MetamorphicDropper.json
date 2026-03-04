@@ -1,0 +1,37 @@
+{
+  "anti_analysis": [
+    "anti_debug_ptrace_traceme",
+    "anti_debug_timing_check",
+    "anti_debug_tracer_pid",
+    "vm_detection_proc_self",
+    "anti_disassembly_junk_bytes",
+    "metamorphic_code_generation"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:8443",
+  "decoded_strings": {
+    "/proc/self/maps": "Used for process hiding functionality",
+    "/proc/self/status": "Decoded from offset 0x82, length 0x11 in encrypted string table at 0x4a9100",
+    "192.168.1.100:8443": "C2 server address decoded at runtime",
+    "TracerPid": "Decoded from offset 0x93, length 0x09"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "RC4",
+    "key": "M3t@M0rph1cK3y",
+    "key_storage": "The key is stored encrypted at address 0x4a90e0 (14 bytes). At runtime, _recover_key() function derives the actual RC4 key by either XORing with 0xa5 or applying bitwise NOT operation based on the process PID. If (PID * (PID+1)) is odd, it NOTs each byte; if even, it XORs with 0xa5. The derived key is stored at 0x4aac10."
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "rc4_encryption",
+    "socket_connect",
+    "anti_debug_ptrace",
+    "anti_debug_timing",
+    "anti_debug_proc_status",
+    "process_hiding",
+    "pid_based_key_derivation",
+    "metamorphic_key_recovery",
+    "string_obfuscation",
+    "xor_encoding"
+  ]
+}

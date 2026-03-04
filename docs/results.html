@@ -333,6 +333,21 @@ body {
   color: var(--text);
 }
 
+/* ── Expanded Chart Container ── */
+.expanded-chart-container {
+  position: relative;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.expanded-chart-container canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 /* ── Heatmap ── */
 .heatmap-container {
   overflow-x: auto;
@@ -669,7 +684,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            1653,
+            3286,
+            4103,
+            4118
+          ],
+          "input_tokens_per_turn": [
+            1645,
+            1627,
+            813,
+            0
+          ],
+          "output_tokens_per_turn": [
+            4,
+            4,
+            2,
+            14
+          ]
+        }
       },
       {
         "task_id": "level2_XorEncodedStrings",
@@ -715,7 +756,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            4941,
+            7622,
+            7711,
+            7779
+          ],
+          "input_tokens_per_turn": [
+            4916,
+            2671,
+            77,
+            0
+          ],
+          "output_tokens_per_turn": [
+            15,
+            10,
+            11,
+            67
+          ]
+        }
       },
       {
         "task_id": "level3_anti-debugging_reverseShell",
@@ -764,7 +831,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            1995,
+            3963,
+            4952,
+            4980
+          ],
+          "input_tokens_per_turn": [
+            1985,
+            1962,
+            982,
+            0
+          ],
+          "output_tokens_per_turn": [
+            6,
+            5,
+            5,
+            27
+          ]
+        }
       },
       {
         "task_id": "level4_polymorphicReverseShell",
@@ -808,7 +901,45 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 203764 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "cumulative_tokens": [
+            1526,
+            3085,
+            5918,
+            8753,
+            8907,
+            10347,
+            11841
+          ],
+          "input_tokens_per_turn": [
+            1512,
+            1553,
+            2827,
+            2827,
+            143,
+            1431,
+            1485
+          ],
+          "output_tokens_per_turn": [
+            9,
+            5,
+            5,
+            7,
+            10,
+            8,
+            8
+          ]
+        }
       },
       {
         "task_id": "level5_MultistageReverseShell",
@@ -858,7 +989,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            2273,
+            4465,
+            5050,
+            6147,
+            6177
+          ],
+          "input_tokens_per_turn": [
+            2260,
+            2184,
+            577,
+            1092,
+            0
+          ],
+          "output_tokens_per_turn": [
+            8,
+            7,
+            8,
+            3,
+            29
+          ]
+        }
       },
       {
         "task_id": "level6_ICMP_CovertChannelShell",
@@ -900,7 +1061,33 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 217593 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            927,
+            1841,
+            2298,
+            3213
+          ],
+          "input_tokens_per_turn": [
+            922,
+            911,
+            455,
+            911
+          ],
+          "output_tokens_per_turn": [
+            3,
+            2,
+            1,
+            2
+          ]
+        }
       },
       {
         "task_id": "level7_DNS_TunnelReverseShell",
@@ -948,7 +1135,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            1743,
+            3463,
+            5184,
+            5188,
+            5210
+          ],
+          "input_tokens_per_turn": [
+            1734,
+            1715,
+            1715,
+            0,
+            0
+          ],
+          "output_tokens_per_turn": [
+            5,
+            4,
+            5,
+            3,
+            22
+          ]
+        }
       },
       {
         "task_id": "level8_Process_hollowing_reverse_shell",
@@ -997,7 +1214,49 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "cumulative_tokens": [
+            4868,
+            7268,
+            9912,
+            12335,
+            12351,
+            12469,
+            12483,
+            12582
+          ],
+          "input_tokens_per_turn": [
+            4842,
+            2393,
+            2630,
+            2409,
+            2,
+            113,
+            3,
+            0
+          ],
+          "output_tokens_per_turn": [
+            16,
+            6,
+            12,
+            14,
+            13,
+            4,
+            10,
+            98
+          ]
+        }
       },
       {
         "task_id": "level9_SharedObjectInjectionReverseShell",
@@ -1046,7 +1305,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            959,
+            4389,
+            4493,
+            4837
+          ],
+          "input_tokens_per_turn": [
+            840,
+            3345,
+            63,
+            0
+          ],
+          "output_tokens_per_turn": [
+            76,
+            84,
+            40,
+            343
+          ]
+        }
       },
       {
         "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
@@ -1093,7 +1378,37 @@ body {
         "error_occurred": true,
         "error_type": "timeout",
         "error_message": "The read operation timed out",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            3380,
+            6830,
+            13100,
+            17892,
+            17949
+          ],
+          "input_tokens_per_turn": [
+            3344,
+            3434,
+            6251,
+            4766,
+            33
+          ],
+          "output_tokens_per_turn": [
+            23,
+            14,
+            18,
+            24,
+            22
+          ]
+        }
       },
       {
         "task_id": "level11_ForkBombReverseShell",
@@ -1135,7 +1450,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            1581,
+            3141,
+            4701,
+            4705,
+            4706,
+            4720
+          ],
+          "input_tokens_per_turn": [
+            1573,
+            1555,
+            1555,
+            0,
+            0,
+            0
+          ],
+          "output_tokens_per_turn": [
+            5,
+            4,
+            3,
+            2,
+            1,
+            13
+          ]
+        }
       },
       {
         "task_id": "level12_JIT_Compiled_Shellcode",
@@ -1184,7 +1533,45 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "cumulative_tokens": [
+            3314,
+            5115,
+            6779,
+            6898,
+            8546,
+            8558,
+            8581
+          ],
+          "input_tokens_per_turn": [
+            3297,
+            1791,
+            1651,
+            110,
+            1641,
+            6,
+            0
+          ],
+          "output_tokens_per_turn": [
+            10,
+            9,
+            11,
+            8,
+            6,
+            5,
+            22
+          ]
+        }
       },
       {
         "task_id": "level13_MetamorphicDropper",
@@ -1246,7 +1633,45 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 216252 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "cumulative_tokens": [
+            1495,
+            2234,
+            3709,
+            4450,
+            4664,
+            5402,
+            6141
+          ],
+          "input_tokens_per_turn": [
+            1487,
+            735,
+            1471,
+            736,
+            209,
+            735,
+            735
+          ],
+          "output_tokens_per_turn": [
+            4,
+            3,
+            4,
+            3,
+            4,
+            2,
+            2
+          ]
+        }
       }
     ],
     "score_results": [
@@ -2505,7 +2930,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            1739,
+            3456,
+            3461,
+            3462,
+            4327,
+            4344
+          ],
+          "input_tokens_per_turn": [
+            1731,
+            1712,
+            0,
+            0,
+            861,
+            0
+          ],
+          "output_tokens_per_turn": [
+            4,
+            4,
+            3,
+            1,
+            4,
+            16
+          ]
+        }
       },
       {
         "task_id": "level2_XorEncodedStrings",
@@ -2547,7 +3006,29 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3
+          ],
+          "cumulative_tokens": [
+            3568,
+            5506,
+            5555
+          ],
+          "input_tokens_per_turn": [
+            3551,
+            1929,
+            0
+          ],
+          "output_tokens_per_turn": [
+            10,
+            8,
+            48
+          ]
+        }
       },
       {
         "task_id": "level3_anti-debugging_reverseShell",
@@ -2595,7 +3076,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            1976,
+            3925,
+            3930,
+            4905,
+            4929
+          ],
+          "input_tokens_per_turn": [
+            1965,
+            1943,
+            1,
+            971,
+            0
+          ],
+          "output_tokens_per_turn": [
+            6,
+            5,
+            3,
+            2,
+            23
+          ]
+        }
       },
       {
         "task_id": "level4_polymorphicReverseShell",
@@ -2639,7 +3150,45 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 247745 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "cumulative_tokens": [
+            905,
+            2671,
+            4352,
+            5194,
+            5274,
+            5314,
+            6999
+          ],
+          "input_tokens_per_turn": [
+            897,
+            1760,
+            1677,
+            838,
+            74,
+            36,
+            1678
+          ],
+          "output_tokens_per_turn": [
+            5,
+            4,
+            3,
+            2,
+            5,
+            3,
+            6
+          ]
+        }
       },
       {
         "task_id": "level5_MultistageReverseShell",
@@ -2690,7 +3239,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            2093,
+            4262,
+            5317,
+            5345,
+            5397,
+            5430
+          ],
+          "input_tokens_per_turn": [
+            2082,
+            2161,
+            1047,
+            22,
+            48,
+            0
+          ],
+          "output_tokens_per_turn": [
+            6,
+            7,
+            7,
+            5,
+            3,
+            32
+          ]
+        }
       },
       {
         "task_id": "level6_ICMP_CovertChannelShell",
@@ -2742,7 +3325,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            1612,
+            1617,
+            3207,
+            4798,
+            4803,
+            4823
+          ],
+          "input_tokens_per_turn": [
+            1604,
+            1,
+            1586,
+            1586,
+            2,
+            0
+          ],
+          "output_tokens_per_turn": [
+            5,
+            3,
+            3,
+            4,
+            3,
+            19
+          ]
+        }
       },
       {
         "task_id": "level7_DNS_TunnelReverseShell",
@@ -2789,7 +3406,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            1499,
+            2979,
+            4459,
+            4480
+          ],
+          "input_tokens_per_turn": [
+            1492,
+            1475,
+            1475,
+            0
+          ],
+          "output_tokens_per_turn": [
+            4,
+            3,
+            4,
+            20
+          ]
+        }
       },
       {
         "task_id": "level8_Process_hollowing_reverse_shell",
@@ -2846,7 +3489,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            8753,
+            13506,
+            17865,
+            17886,
+            18061
+          ],
+          "input_tokens_per_turn": [
+            8705,
+            4729,
+            4331,
+            4,
+            0
+          ],
+          "output_tokens_per_turn": [
+            30,
+            23,
+            26,
+            16,
+            174
+          ]
+        }
       },
       {
         "task_id": "level9_SharedObjectInjectionReverseShell",
@@ -2896,7 +3569,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            1476,
+            6162,
+            7870,
+            8536
+          ],
+          "input_tokens_per_turn": [
+            1256,
+            4557,
+            1613,
+            0
+          ],
+          "output_tokens_per_turn": [
+            143,
+            129,
+            93,
+            665
+          ]
+        }
       },
       {
         "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
@@ -2942,7 +3641,33 @@ body {
         "error_occurred": true,
         "error_type": "timeout",
         "error_message": "The read operation timed out",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            1610,
+            3253,
+            7025,
+            8526
+          ],
+          "input_tokens_per_turn": [
+            1593,
+            1636,
+            3758,
+            1490
+          ],
+          "output_tokens_per_turn": [
+            11,
+            6,
+            12,
+            9
+          ]
+        }
       },
       {
         "task_id": "level11_ForkBombReverseShell",
@@ -2987,7 +3712,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            1755,
+            3487,
+            4360,
+            4379
+          ],
+          "input_tokens_per_turn": [
+            1746,
+            1726,
+            868,
+            0
+          ],
+          "output_tokens_per_turn": [
+            5,
+            5,
+            4,
+            18
+          ]
+        }
       },
       {
         "task_id": "level12_JIT_Compiled_Shellcode",
@@ -3036,7 +3787,49 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "cumulative_tokens": [
+            3358,
+            5183,
+            8496,
+            8508,
+            8535,
+            8560,
+            8575,
+            8604
+          ],
+          "input_tokens_per_turn": [
+            3341,
+            1815,
+            3304,
+            3,
+            17,
+            15,
+            8,
+            0
+          ],
+          "output_tokens_per_turn": [
+            10,
+            9,
+            8,
+            8,
+            8,
+            9,
+            5,
+            28
+          ]
+        }
       },
       {
         "task_id": "level13_MetamorphicDropper",
@@ -3099,7 +3892,49 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 213587 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "cumulative_tokens": [
+            1894,
+            1898,
+            3860,
+            3870,
+            4871,
+            5829,
+            6766,
+            7702
+          ],
+          "input_tokens_per_turn": [
+            1885,
+            1,
+            1956,
+            3,
+            995,
+            951,
+            932,
+            932
+          ],
+          "output_tokens_per_turn": [
+            5,
+            2,
+            5,
+            6,
+            5,
+            6,
+            4,
+            3
+          ]
+        }
       }
     ],
     "score_results": [
@@ -3520,7 +4355,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            1185,
+            2356,
+            2358,
+            2363,
+            2949,
+            2959
+          ],
+          "input_tokens_per_turn": [
+            1180,
+            1167,
+            0,
+            3,
+            583,
+            0
+          ],
+          "output_tokens_per_turn": [
+            1,
+            3,
+            1,
+            0,
+            2,
+            9
+          ]
+        }
       },
       {
         "task_id": "level2_XorEncodedStrings",
@@ -3565,7 +4434,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            2265,
+            3495,
+            5730,
+            5735,
+            5763
+          ],
+          "input_tokens_per_turn": [
+            2255,
+            1225,
+            2230,
+            1,
+            0
+          ],
+          "output_tokens_per_turn": [
+            4,
+            4,
+            4,
+            4,
+            27
+          ]
+        }
       },
       {
         "task_id": "level3_anti-debugging_reverseShell",
@@ -3617,7 +4516,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            1975,
+            3925,
+            3930,
+            4904,
+            4917
+          ],
+          "input_tokens_per_turn": [
+            1965,
+            1943,
+            1,
+            971,
+            0
+          ],
+          "output_tokens_per_turn": [
+            6,
+            6,
+            3,
+            2,
+            12
+          ]
+        }
       },
       {
         "task_id": "level4_polymorphicReverseShell",
@@ -3662,7 +4591,41 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 225909 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            1459,
+            2950,
+            5660,
+            8372,
+            8445,
+            9820
+          ],
+          "input_tokens_per_turn": [
+            1445,
+            1485,
+            2703,
+            2703,
+            63,
+            1366
+          ],
+          "output_tokens_per_turn": [
+            8,
+            5,
+            6,
+            7,
+            9,
+            7
+          ]
+        }
       },
       {
         "task_id": "level5_MultistageReverseShell",
@@ -3713,7 +4676,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            1695,
+            3330,
+            4964,
+            4980,
+            4993
+          ],
+          "input_tokens_per_turn": [
+            1686,
+            1629,
+            1629,
+            11,
+            0
+          ],
+          "output_tokens_per_turn": [
+            5,
+            4,
+            3,
+            4,
+            12
+          ]
+        }
       },
       {
         "task_id": "level6_ICMP_CovertChannelShell",
@@ -3758,7 +4751,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            434,
+            863,
+            1291,
+            1293,
+            1295
+          ],
+          "input_tokens_per_turn": [
+            432,
+            427,
+            427,
+            1,
+            0
+          ],
+          "output_tokens_per_turn": [
+            1,
+            0,
+            1,
+            0,
+            1
+          ]
+        }
       },
       {
         "task_id": "level7_DNS_TunnelReverseShell",
@@ -3806,7 +4829,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            845,
+            1678,
+            2099,
+            2110
+          ],
+          "input_tokens_per_turn": [
+            841,
+            832,
+            418,
+            0
+          ],
+          "output_tokens_per_turn": [
+            1,
+            1,
+            2,
+            10
+          ]
+        }
       },
       {
         "task_id": "level8_Process_hollowing_reverse_shell",
@@ -3854,7 +4903,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            3915,
+            7776,
+            9725,
+            11760,
+            11819
+          ],
+          "input_tokens_per_turn": [
+            3893,
+            3849,
+            1937,
+            2022,
+            0
+          ],
+          "output_tokens_per_turn": [
+            14,
+            10,
+            11,
+            12,
+            58
+          ]
+        }
       },
       {
         "task_id": "level9_SharedObjectInjectionReverseShell",
@@ -3906,7 +4985,33 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            937,
+            3974,
+            4070,
+            4383
+          ],
+          "input_tokens_per_turn": [
+            821,
+            2982,
+            61,
+            0
+          ],
+          "output_tokens_per_turn": [
+            75,
+            53,
+            34,
+            312
+          ]
+        }
       },
       {
         "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
@@ -3952,7 +5057,33 @@ body {
         "error_occurred": true,
         "error_type": "timeout",
         "error_message": "The read operation timed out",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "cumulative_tokens": [
+            704,
+            1422,
+            2728,
+            3726
+          ],
+          "input_tokens_per_turn": [
+            696,
+            715,
+            1301,
+            992
+          ],
+          "output_tokens_per_turn": [
+            5,
+            2,
+            4,
+            5
+          ]
+        }
       },
       {
         "task_id": "level11_ForkBombReverseShell",
@@ -3996,7 +5127,37 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cumulative_tokens": [
+            899,
+            1389,
+            1391,
+            1838,
+            1848
+          ],
+          "input_tokens_per_turn": [
+            896,
+            486,
+            0,
+            445,
+            0
+          ],
+          "output_tokens_per_turn": [
+            2,
+            2,
+            1,
+            1,
+            9
+          ]
+        }
       },
       {
         "task_id": "level12_JIT_Compiled_Shellcode",
@@ -4044,7 +5205,57 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 210921 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "cumulative_tokens": [
+            783,
+            2309,
+            3762,
+            5216,
+            5222,
+            5231,
+            5238,
+            5240,
+            5243,
+            5626
+          ],
+          "input_tokens_per_turn": [
+            775,
+            1521,
+            1450,
+            1450,
+            1,
+            5,
+            4,
+            1,
+            1,
+            380
+          ],
+          "output_tokens_per_turn": [
+            4,
+            4,
+            2,
+            3,
+            4,
+            2,
+            2,
+            1,
+            1,
+            2
+          ]
+        }
       },
       {
         "task_id": "level13_MetamorphicDropper",
@@ -4106,7 +5317,41 @@ body {
         "error_occurred": true,
         "error_type": "context_overflow",
         "error_message": "Context overflow: 208831 tokens",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            1274,
+            2531,
+            3164,
+            3813,
+            4462,
+            5107
+          ],
+          "input_tokens_per_turn": [
+            1268,
+            1254,
+            628,
+            645,
+            645,
+            640
+          ],
+          "output_tokens_per_turn": [
+            3,
+            2,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
       }
     ],
     "score_results": [
@@ -4521,7 +5766,49 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "cumulative_tokens": [
+            1784,
+            3517,
+            5250,
+            5258,
+            5262,
+            5271,
+            5286,
+            5296
+          ],
+          "input_tokens_per_turn": [
+            1766,
+            1728,
+            1728,
+            1,
+            0,
+            4,
+            9,
+            0
+          ],
+          "output_tokens_per_turn": [
+            10,
+            4,
+            5,
+            5,
+            4,
+            4,
+            4,
+            9
+          ]
+        }
       },
       {
         "task_id": "level2_XorEncodedStrings",
@@ -4565,7 +5852,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            5187,
+            10230,
+            10501,
+            10579,
+            10604,
+            10790
+          ],
+          "input_tokens_per_turn": [
+            5140,
+            5027,
+            254,
+            64,
+            5,
+            0
+          ],
+          "output_tokens_per_turn": [
+            27,
+            15,
+            16,
+            14,
+            19,
+            185
+          ]
+        }
       },
       {
         "task_id": "level3_anti-debugging_reverseShell",
@@ -4615,7 +5936,53 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "cumulative_tokens": [
+            2204,
+            4345,
+            6487,
+            6494,
+            6510,
+            6521,
+            6529,
+            6537,
+            6562
+          ],
+          "input_tokens_per_turn": [
+            2182,
+            2133,
+            2133,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_tokens_per_turn": [
+            13,
+            7,
+            8,
+            6,
+            11,
+            10,
+            7,
+            7,
+            24
+          ]
+        }
       },
       {
         "task_id": "level4_polymorphicReverseShell",
@@ -4663,7 +6030,65 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "cumulative_tokens": [
+            2657,
+            5239,
+            7827,
+            7839,
+            7849,
+            7857,
+            7864,
+            7872,
+            7883,
+            7900,
+            10517,
+            10588
+          ],
+          "input_tokens_per_turn": [
+            2630,
+            2572,
+            2575,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2572,
+            0
+          ],
+          "output_tokens_per_turn": [
+            17,
+            8,
+            13,
+            9,
+            8,
+            7,
+            7,
+            7,
+            10,
+            16,
+            44,
+            70
+          ]
+        }
       },
       {
         "task_id": "level5_MultistageReverseShell",
@@ -4712,7 +6137,61 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "cumulative_tokens": [
+            1544,
+            3081,
+            4590,
+            6090,
+            6096,
+            6102,
+            6107,
+            6111,
+            6119,
+            6126,
+            6133
+          ],
+          "input_tokens_per_turn": [
+            1529,
+            1529,
+            1500,
+            1495,
+            0,
+            1,
+            0,
+            0,
+            4,
+            4,
+            0
+          ],
+          "output_tokens_per_turn": [
+            9,
+            7,
+            8,
+            4,
+            6,
+            4,
+            4,
+            3,
+            4,
+            2,
+            6
+          ]
+        }
       },
       {
         "task_id": "level6_ICMP_CovertChannelShell",
@@ -4767,7 +6246,61 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "cumulative_tokens": [
+            1927,
+            5665,
+            7537,
+            7546,
+            7556,
+            7566,
+            7577,
+            7582,
+            7588,
+            7595,
+            7607
+          ],
+          "input_tokens_per_turn": [
+            1907,
+            3730,
+            1865,
+            2,
+            5,
+            5,
+            5,
+            2,
+            0,
+            5,
+            0
+          ],
+          "output_tokens_per_turn": [
+            12,
+            8,
+            6,
+            7,
+            4,
+            5,
+            5,
+            3,
+            5,
+            2,
+            11
+          ]
+        }
       },
       {
         "task_id": "level7_DNS_TunnelReverseShell",
@@ -4814,7 +6347,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            802,
+            1601,
+            1706,
+            2486,
+            3266,
+            3272
+          ],
+          "input_tokens_per_turn": [
+            795,
+            795,
+            100,
+            777,
+            777,
+            0
+          ],
+          "output_tokens_per_turn": [
+            4,
+            4,
+            4,
+            2,
+            2,
+            5
+          ]
+        }
       },
       {
         "task_id": "level8_Process_hollowing_reverse_shell",
@@ -4864,7 +6431,45 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "cumulative_tokens": [
+            2330,
+            4594,
+            6858,
+            6869,
+            6933,
+            6992,
+            7025
+          ],
+          "input_tokens_per_turn": [
+            2307,
+            2256,
+            2256,
+            2,
+            57,
+            49,
+            0
+          ],
+          "output_tokens_per_turn": [
+            14,
+            7,
+            8,
+            8,
+            7,
+            9,
+            32
+          ]
+        }
       },
       {
         "task_id": "level9_SharedObjectInjectionReverseShell",
@@ -4917,7 +6522,41 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "cumulative_tokens": [
+            548,
+            3616,
+            3988,
+            4453,
+            4554,
+            4615
+          ],
+          "input_tokens_per_turn": [
+            433,
+            3024,
+            316,
+            410,
+            62,
+            0
+          ],
+          "output_tokens_per_turn": [
+            75,
+            43,
+            55,
+            55,
+            38,
+            60
+          ]
+        }
       },
       {
         "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
@@ -4969,7 +6608,53 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "cumulative_tokens": [
+            1179,
+            3473,
+            4679,
+            4687,
+            4704,
+            4713,
+            4720,
+            4724,
+            4738
+          ],
+          "input_tokens_per_turn": [
+            1166,
+            2286,
+            1198,
+            0,
+            10,
+            2,
+            0,
+            3,
+            0
+          ],
+          "output_tokens_per_turn": [
+            7,
+            7,
+            7,
+            8,
+            5,
+            6,
+            6,
+            1,
+            13
+          ]
+        }
       },
       {
         "task_id": "level11_ForkBombReverseShell",
@@ -5014,7 +6699,65 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "cumulative_tokens": [
+            3303,
+            6511,
+            9718,
+            9730,
+            9740,
+            9753,
+            9764,
+            9773,
+            9785,
+            9805,
+            9831,
+            9890
+          ],
+          "input_tokens_per_turn": [
+            3269,
+            3197,
+            3197,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "output_tokens_per_turn": [
+            21,
+            10,
+            9,
+            8,
+            9,
+            12,
+            10,
+            9,
+            11,
+            19,
+            25,
+            58
+          ]
+        }
       },
       {
         "task_id": "level12_JIT_Compiled_Shellcode",
@@ -5062,7 +6805,65 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "cumulative_tokens": [
+            3703,
+            7300,
+            7333,
+            10949,
+            10967,
+            10979,
+            10998,
+            11009,
+            11021,
+            11032,
+            11046,
+            11064
+          ],
+          "input_tokens_per_turn": [
+            3666,
+            3585,
+            15,
+            3593,
+            0,
+            0,
+            9,
+            0,
+            0,
+            0,
+            10,
+            0
+          ],
+          "output_tokens_per_turn": [
+            22,
+            12,
+            16,
+            22,
+            17,
+            11,
+            10,
+            10,
+            10,
+            10,
+            3,
+            17
+          ]
+        }
       },
       {
         "task_id": "level13_MetamorphicDropper",
@@ -5127,7 +6928,45 @@ body {
         "error_occurred": false,
         "error_type": "",
         "error_message": "",
-        "http_status_code": 0
+        "http_status_code": 0,
+        "token_breakdown": {
+          "turns": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "cumulative_tokens": [
+            598,
+            1179,
+            1761,
+            2341,
+            2922,
+            3503,
+            3514
+          ],
+          "input_tokens_per_turn": [
+            592,
+            579,
+            579,
+            579,
+            579,
+            579,
+            0
+          ],
+          "output_tokens_per_turn": [
+            3,
+            2,
+            2,
+            1,
+            1,
+            1,
+            10
+          ]
+        }
       }
     ],
     "score_results": [
@@ -5663,7 +7502,7 @@ class ChartRenderer {
     this.charts.set(canvasId, chart);
   }
 
-  renderTaskProgression(canvasId, modelLabel) {
+  renderTaskProgression(canvasId, modelLabel, chartType = 'line') {
     this.destroy(canvasId);
 
     const ctx = document.getElementById(canvasId);
@@ -5676,19 +7515,19 @@ class ChartRenderer {
     });
 
     const chart = new Chart(ctx, {
-      type: 'line',
+      type: chartType,
       data: {
         labels: levels.map(l => `L${l}`),
         datasets: [{
           label: 'Score',
           data: tasks.map(t => t.score),
           borderColor: '#00d4aa',
-          backgroundColor: 'rgba(0, 212, 170, 0.1)',
+          backgroundColor: chartType === 'bar' ? '#00d4aa' : 'rgba(0, 212, 170, 0.1)',
           borderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6,
+          pointRadius: chartType === 'line' ? 4 : 0,
+          pointHoverRadius: chartType === 'line' ? 6 : 0,
           tension: 0.2,
-          fill: true
+          fill: chartType === 'line'
         }]
       },
       options: {
@@ -5729,7 +7568,7 @@ class ChartRenderer {
     this.charts.set(canvasId, chart);
   }
 
-  renderTaskProgressionComparison(canvasId, models, currentModelIndex) {
+  renderTaskProgressionComparison(canvasId, models, currentModelIndex, chartType = 'line') {
     this.destroy(canvasId);
 
     const ctx = document.getElementById(canvasId);
@@ -5750,12 +7589,12 @@ class ChartRenderer {
         label: model.label,
         data: tasks.map(t => t.score),
         borderColor: color,
-        backgroundColor: color + (isCurrent ? '30' : '10'),
-        borderWidth: isCurrent ? 3 : 2,
-        pointRadius: isCurrent ? 4 : 3,
-        pointHoverRadius: isCurrent ? 6 : 5,
+        backgroundColor: chartType === 'bar' ? color : (color + (isCurrent ? '30' : '10')),
+        borderWidth: chartType === 'line' ? (isCurrent ? 3 : 2) : 0,
+        pointRadius: chartType === 'line' ? (isCurrent ? 4 : 3) : 0,
+        pointHoverRadius: chartType === 'line' ? (isCurrent ? 6 : 5) : 0,
         tension: 0.2,
-        fill: isCurrent,
+        fill: chartType === 'line' && isCurrent,
         order: isCurrent ? 0 : 1  // Current model on top
       };
     });
@@ -5769,7 +7608,7 @@ class ChartRenderer {
     const labels = Array.from({ length: maxTasks }, (_, i) => `L${i + 1}`);
 
     const chart = new Chart(ctx, {
-      type: 'line',
+      type: chartType,
       data: {
         labels: labels,
         datasets: datasets
@@ -5893,6 +7732,183 @@ class ChartRenderer {
                 return `${label}: ${value} (${percentage}%)`;
               }
             }
+          }
+        }
+      }
+    });
+
+    this.charts.set(canvasId, chart);
+  }
+
+  renderCumulativeTokens(canvasId, task) {
+    this.destroy(canvasId);
+
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+
+    // Get token breakdown data
+    const tokenData = task.token_breakdown;
+    if (!tokenData || !tokenData.turns || tokenData.turns.length === 0) {
+      console.warn('No token breakdown data available for task:', task.task_id);
+      return;
+    }
+
+    const turns = tokenData.turns;
+    const inputPerTurn = tokenData.input_tokens_per_turn;
+    const outputPerTurn = tokenData.output_tokens_per_turn;
+    const cumulative = tokenData.cumulative_tokens;
+
+    // Check if there's a context overflow error
+    const hasContextOverflow = task.error_occurred &&
+                                task.error_type === 'context_overflow' &&
+                                task.error_message;
+    let errorTokenCount = null;
+
+    if (hasContextOverflow) {
+      // Extract token count from error message like "Context overflow: 217154 tokens"
+      const match = task.error_message.match(/(\d+)\s+tokens/);
+      if (match) {
+        errorTokenCount = parseInt(match[1]);
+      }
+    }
+
+    // Build datasets
+    const datasets = [
+      {
+        label: 'Input Tokens',
+        data: inputPerTurn,
+        backgroundColor: '#6366f1',  // Indigo
+        stack: 'tokens',
+        order: 2
+      },
+      {
+        label: 'Output Tokens',
+        data: outputPerTurn,
+        backgroundColor: '#00d4aa',  // Teal (accent)
+        stack: 'tokens',
+        order: 2
+      },
+      {
+        label: 'Cumulative Total',
+        data: cumulative,
+        type: 'line',  // Line chart overlaid on bars
+        borderColor: '#f59e0b',  // Orange
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        tension: 0.2,
+        order: 1,  // Render on top
+        yAxisID: 'y-cumulative'
+      }
+    ];
+
+    // Add error point if context overflow occurred
+    if (errorTokenCount) {
+      datasets.push({
+        label: 'Context Overflow',
+        data: [...Array(turns.length).fill(null), errorTokenCount],
+        type: 'scatter',
+        backgroundColor: '#ef4444',  // Red
+        borderColor: '#ef4444',
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointStyle: 'triangle',
+        order: 0,  // Render on top
+        yAxisID: 'y-cumulative'
+      });
+    }
+
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [...turns.map(t => `Turn ${t}`), ...(errorTokenCount ? ['Failed'] : [])],
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              color: '#e0e0e8',
+              padding: 8,
+              font: { size: 10 },
+              usePointStyle: true,
+              filter: function(item) {
+                // Hide the Context Overflow from legend if there's no error
+                return item.text !== 'Context Overflow' || errorTokenCount !== null;
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#111119',
+            titleColor: '#e0e0e8',
+            bodyColor: '#e0e0e8',
+            borderColor: '#1e1e2a',
+            borderWidth: 1,
+            callbacks: {
+              title: (items) => {
+                const item = items[0];
+                if (item.dataset.label === 'Context Overflow') {
+                  return 'Turn ' + (turns.length + 1) + ' (Failed)';
+                }
+                return item.label;
+              },
+              label: (context) => {
+                if (context.dataset.label === 'Context Overflow') {
+                  return `Context would overflow at ${context.parsed.y.toLocaleString()} tokens`;
+                }
+                return context.dataset.label + ': ' + Math.round(context.parsed.y).toLocaleString() + ' tokens';
+              },
+              footer: (items) => {
+                const turnIndex = items[0].dataIndex;
+                if (turnIndex >= cumulative.length) {
+                  return 'Error occurred before this turn completed';
+                }
+                return `Cumulative: ${Math.round(cumulative[turnIndex]).toLocaleString()} tokens`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            grid: { display: false },
+            ticks: {
+              color: '#8888a0',
+              maxRotation: 45,
+              minRotation: 0,
+              font: { size: 9 }
+            }
+          },
+          y: {
+            stacked: true,
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Tokens per Turn',
+              color: '#8888a0',
+              font: { size: 11 }
+            },
+            grid: { color: '#1e1e2a' },
+            ticks: { color: '#8888a0' }
+          },
+          'y-cumulative': {
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Cumulative Total',
+              color: '#f59e0b',
+              font: { size: 11 }
+            },
+            grid: { display: false },
+            ticks: { color: '#8888a0' }
           }
         }
       }
@@ -6121,10 +8137,21 @@ class ModelDetailView {
         <div class="chart-container">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <h2 class="chart-title" style="margin-bottom: 0;">Task Progression (Levels 1-13)</h2>
-            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
-              <input type="checkbox" id="compare-models-toggle" style="cursor: pointer;">
-              <span style="font-size: 0.9rem; color: var(--text-dim);">Compare with other models</span>
-            </label>
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px; padding: 4px 12px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px;">
+                <span style="font-size: 0.85rem; color: var(--text-dim);">Chart type:</span>
+                <button id="chart-type-line" class="chart-type-btn active" data-type="line" style="padding: 4px 12px; background: var(--accent); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;">
+                  Line
+                </button>
+                <button id="chart-type-bar" class="chart-type-btn" data-type="bar" style="padding: 4px 12px; background: transparent; color: var(--text-dim); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;">
+                  Bar
+                </button>
+              </div>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="compare-models-toggle" style="cursor: pointer;">
+                <span style="font-size: 0.9rem; color: var(--text-dim);">Compare with other models</span>
+              </label>
+            </div>
           </div>
           <div id="comparison-hint" style="display: none; margin-bottom: 12px; padding: 8px 12px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; color: var(--text-dim);">
             💡 Click on legend items to show/hide individual models
@@ -6277,12 +8304,36 @@ class ModelDetailView {
       </div>
     `).join('');
 
+    // Generate unique chart ID
+    const chartId = `token-chart-${task.task_id}`;
+
+    // Check if token breakdown data exists
+    const hasTokenData = task.token_breakdown &&
+                         task.token_breakdown.turns &&
+                         task.token_breakdown.turns.length > 0;
+
     return `
       <div class="expanded-content">
         <h4 style="margin-bottom: 12px; color: var(--text);">Field Scores</h4>
         <div class="field-scores">
           ${fieldScores}
         </div>
+
+        ${hasTokenData ? `
+          <!-- Token Usage Chart -->
+          <div style="margin-top: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="margin: 0; color: var(--text);">Cumulative Token Usage</h4>
+              <span style="font-size: 0.75rem; color: var(--text-dim);">
+                ${task.token_breakdown.turns.length} turns • ${task.tool_calls_total} tool calls • ${task.total_tokens} total tokens
+              </span>
+            </div>
+            <div class="expanded-chart-container" style="height: 250px;">
+              <canvas id="${chartId}"></canvas>
+            </div>
+          </div>
+        ` : ''}
+
         ${task.error_occurred ? `
           <div style="margin-top: 16px; padding: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--red); border-radius: 6px; color: var(--text-dim); font-size: 0.85rem;">
             <strong style="color: var(--red);">Error:</strong> ${task.error_message || 'Unknown error'}
@@ -6296,23 +8347,78 @@ class ModelDetailView {
     const model = dataset.getModels()[modelId];
     if (!model) return;
 
+    let currentChartType = 'line';  // Track current chart type
+
     // Initial render with single model
-    chartRenderer.renderTaskProgression('task-progression-chart', model.label);
+    chartRenderer.renderTaskProgression('task-progression-chart', model.label, currentChartType);
     chartRenderer.renderToolUsage('tool-usage-chart', model.aggregate_metrics.tool_usage_distribution);
 
-    // Add toggle handler for comparison mode
+    // Add chart type toggle handlers
+    const lineBtn = document.getElementById('chart-type-line');
+    const barBtn = document.getElementById('chart-type-bar');
     const toggle = document.getElementById('compare-models-toggle');
     const hint = document.getElementById('comparison-hint');
+
+    const updateChartTypeButtons = (type) => {
+      currentChartType = type;
+      if (lineBtn && barBtn) {
+        if (type === 'line') {
+          lineBtn.classList.add('active');
+          lineBtn.style.background = 'var(--accent)';
+          lineBtn.style.color = 'var(--bg)';
+          lineBtn.style.border = 'none';
+          barBtn.classList.remove('active');
+          barBtn.style.background = 'transparent';
+          barBtn.style.color = 'var(--text-dim)';
+          barBtn.style.border = '1px solid var(--border)';
+        } else {
+          barBtn.classList.add('active');
+          barBtn.style.background = 'var(--accent)';
+          barBtn.style.color = 'var(--bg)';
+          barBtn.style.border = 'none';
+          lineBtn.classList.remove('active');
+          lineBtn.style.background = 'transparent';
+          lineBtn.style.color = 'var(--text-dim)';
+          lineBtn.style.border = '1px solid var(--border)';
+        }
+      }
+    };
+
+    if (lineBtn) {
+      lineBtn.addEventListener('click', () => {
+        updateChartTypeButtons('line');
+        if (toggle && toggle.checked) {
+          const allModels = dataset.getModels();
+          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId), 'line');
+        } else {
+          chartRenderer.renderTaskProgression('task-progression-chart', model.label, 'line');
+        }
+      });
+    }
+
+    if (barBtn) {
+      barBtn.addEventListener('click', () => {
+        updateChartTypeButtons('bar');
+        if (toggle && toggle.checked) {
+          const allModels = dataset.getModels();
+          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId), 'bar');
+        } else {
+          chartRenderer.renderTaskProgression('task-progression-chart', model.label, 'bar');
+        }
+      });
+    }
+
+    // Add toggle handler for comparison mode
     if (toggle) {
       toggle.addEventListener('change', (e) => {
         if (e.target.checked) {
           // Render comparison mode with all models
           const allModels = dataset.getModels();
-          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId));
+          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId), currentChartType);
           if (hint) hint.style.display = 'block';
         } else {
           // Render single model mode
-          chartRenderer.renderTaskProgression('task-progression-chart', model.label);
+          chartRenderer.renderTaskProgression('task-progression-chart', model.label, currentChartType);
           if (hint) hint.style.display = 'none';
         }
       });
@@ -6321,10 +8427,29 @@ class ModelDetailView {
     // Add click handlers for expandable rows
     document.querySelectorAll('.task-table .expandable').forEach(row => {
       row.addEventListener('click', () => {
-        const index = row.dataset.taskIndex;
-        const expandedRow = document.getElementById(`expanded-${index}`);
+        const taskIndex = row.dataset.taskIndex;
+        const expandedRow = document.getElementById(`expanded-${taskIndex}`);
         const isVisible = expandedRow.style.display !== 'none';
-        expandedRow.style.display = isVisible ? 'none' : 'table-row';
+
+        if (!isVisible) {
+          // Row is being opened - show and render chart
+          expandedRow.style.display = 'table-row';
+
+          const task = model.task_metrics[taskIndex];
+
+          // Render token chart if data available
+          if (task.token_breakdown) {
+            const chartId = `token-chart-${task.task_id}`;
+            setTimeout(() => {
+              chartRenderer.renderCumulativeTokens(chartId, task);
+            }, 50);
+          }
+        } else {
+          // Row is being closed - hide and destroy chart
+          expandedRow.style.display = 'none';
+          const task = model.task_metrics[taskIndex];
+          chartRenderer.destroy(`token-chart-${task.task_id}`);
+        }
       });
     });
   }

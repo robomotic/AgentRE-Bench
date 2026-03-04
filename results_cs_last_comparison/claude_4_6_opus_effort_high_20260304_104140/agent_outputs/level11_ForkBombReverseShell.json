@@ -1,0 +1,19 @@
+{
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "ip_address": "192.168.1.100",
+    "port": "4444 (0x115c)",
+    "shell": "/bin/sh"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_connect",
+    "reverse_shell",
+    "fork_bomb",
+    "dup2_redirect",
+    "execve_shell",
+    "process_fork"
+  ]
+}

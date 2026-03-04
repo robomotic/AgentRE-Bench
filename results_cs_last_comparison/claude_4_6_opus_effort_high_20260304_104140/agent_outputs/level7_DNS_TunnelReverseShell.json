@@ -1,0 +1,30 @@
+{
+  "anti_analysis": [],
+  "c2_protocol": "DNS",
+  "decoded_c2": "cmd.attacker.com",
+  "decoded_strings": {
+    "beacon_string": "beacon",
+    "c2_domain": "cmd.attacker.com",
+    "executed_command": "ls",
+    "exfil_format": "%s.%s.attacker.com",
+    "hex_format": "%02x",
+    "popen_mode": "r",
+    "shell_path": "/bin/sh"
+  },
+  "encoded_strings": false,
+  "encryption_details": {
+    "algorithm": "none - plaintext hex encoding",
+    "key": "N/A",
+    "key_storage": "N/A"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "dns_tunneling",
+    "dns_exfiltration",
+    "command_execution",
+    "gethostbyname_resolution",
+    "popen_command_exec",
+    "dns_beaconing",
+    "data_hex_encoding"
+  ]
+}

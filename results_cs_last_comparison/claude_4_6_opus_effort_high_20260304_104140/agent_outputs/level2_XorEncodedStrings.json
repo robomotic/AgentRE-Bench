@@ -1,0 +1,23 @@
+{
+  "anti_analysis": [],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "ip_address": "192.168.1.100",
+    "port": "4444",
+    "shell": "/bin/sh"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "XOR",
+    "key": "0x22",
+    "key_storage": "hardcoded_immediate"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "xor_encoding",
+    "socket_connect",
+    "dup2_redirect",
+    "execve_shell"
+  ]
+}

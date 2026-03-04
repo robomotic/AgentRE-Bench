@@ -1,0 +1,849 @@
+{
+  "config": {
+    "model": "claude-4-6-opus",
+    "provider": "openai",
+    "max_tool_calls": 25,
+    "use_docker": true
+  },
+  "aggregate_metrics": {
+    "success_rate": 0.0,
+    "main_score": 0.0667,
+    "bonus_score": 0.0,
+    "total_score": 0.0667,
+    "avg_tool_calls_per_task": 0.0,
+    "avg_tool_calls_per_success": 0.0,
+    "tool_usage_distribution": {},
+    "avg_hallucination_rate": 0.0,
+    "episode_length_min": 0.47,
+    "episode_length_max": 0.52,
+    "episode_length_mean": 0.49,
+    "episode_length_median": 0.48,
+    "total_wall_time": 6.32,
+    "total_tokens": 0,
+    "max_steps_hit_count": 0,
+    "tasks_run": 13,
+    "tasks_with_answer": 0,
+    "total_errors": 13,
+    "errors_by_type": {
+      "http_error": 13
+    },
+    "errors_by_http_status": {
+      "500": 13
+    },
+    "context_overflow_errors": 0,
+    "timeout_errors": 0
+  },
+  "task_metrics": [
+    {
+      "task_id": "level1_TCPServer",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "socket_connect"
+      ],
+      "wall_time_seconds": 0.5,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level2_XorEncodedStrings",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "socket_connect",
+        "xor_decode"
+      ],
+      "wall_time_seconds": 0.49,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level3_anti-debugging_reverseShell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "delay_execution",
+        "dup2_redirect",
+        "env_check",
+        "execve_shell",
+        "fork_background",
+        "ptrace_anti_debug",
+        "socket_connect"
+      ],
+      "wall_time_seconds": 0.48,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level4_polymorphicReverseShell",
+      "score": 0.4,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "dynamic_memory_exec",
+        "nop_sled",
+        "polymorphic_shellcode",
+        "socket_syscall"
+      ],
+      "wall_time_seconds": 0.48,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level5_MultistageReverseShell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "multistage_payload",
+        "recv_key",
+        "shellcode_exec",
+        "socket_connect",
+        "xor_decode"
+      ],
+      "wall_time_seconds": 0.48,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level6_ICMP_CovertChannelShell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "command_in_icmp_data",
+        "crafted_icmp_packets",
+        "icmp_covert_channel",
+        "raw_socket"
+      ],
+      "wall_time_seconds": 0.52,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level7_DNS_TunnelReverseShell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "command_exec_popen",
+        "dns_beacon",
+        "dns_exfiltration",
+        "dns_tunneling",
+        "hex_encode"
+      ],
+      "wall_time_seconds": 0.48,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level8_Process_hollowing_reverse_shell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "fork_exec",
+        "process_hollowing",
+        "ptrace_inject",
+        "register_manipulation",
+        "shellcode_injection"
+      ],
+      "wall_time_seconds": 0.48,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level9_SharedObjectInjectionReverseShell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "constructor_attribute",
+        "dlsym_hijack",
+        "dup2_redirect",
+        "env_check",
+        "execve_shell",
+        "function_hooking",
+        "shared_object_injection"
+      ],
+      "wall_time_seconds": 0.49,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level10_fully_obfuscated_AES_Encrypted_Shell",
+      "score": 0.4,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "anti_analysis",
+        "env_check",
+        "inline_asm_syscall",
+        "mmap_exec",
+        "runtime_decrypt",
+        "xor_encrypt"
+      ],
+      "wall_time_seconds": 0.49,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level11_ForkBombReverseShell",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "denial_of_service",
+        "dup2_redirect",
+        "execve_shell",
+        "fork_bomb",
+        "fork_exec",
+        "socket_connect"
+      ],
+      "wall_time_seconds": 0.48,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level12_JIT_Compiled_Shellcode",
+      "score": 0.0,
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "jit_compilation",
+        "mmap_exec",
+        "runtime_patching",
+        "self_modifying_code",
+        "socket_connect"
+      ],
+      "wall_time_seconds": 0.47,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    },
+    {
+      "task_id": "level13_MetamorphicDropper",
+      "score": 0.0,
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 0.0,
+        "encryption_key": 0.0,
+        "encryption_key_storage": 0.0,
+        "techniques": 0.0,
+        "decoded_strings": 0.0,
+        "anti_analysis": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "tool_calls_total": 0,
+      "tool_calls_by_type": {},
+      "redundant_tool_calls": 0,
+      "invalid_tool_calls": 0,
+      "invalid_json_attempts": 0,
+      "steps_to_answer": 0,
+      "max_steps_hit": false,
+      "has_valid_answer": false,
+      "hallucinated_techniques": [],
+      "hallucination_count": 0,
+      "missing_techniques": [
+        "anti_debug_proc_status",
+        "anti_debug_ptrace",
+        "anti_debug_timing",
+        "control_flow_flattening",
+        "curl_download",
+        "dead_code_paths",
+        "encrypted_string_table",
+        "fork_exec",
+        "indirect_syscall",
+        "infection_marker_check",
+        "key_derivation_xor_mask",
+        "metamorphic_nop_equivalent",
+        "opaque_predicates",
+        "os_fingerprint",
+        "process_hiding",
+        "rc4_encryption",
+        "self_modifying_code",
+        "system_exec"
+      ],
+      "wall_time_seconds": 0.48,
+      "total_tokens": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "error_occurred": true,
+      "error_type": "http_error",
+      "error_message": "HTTP 500: failed to execute the call: invalid reasoning_effort provided: max",
+      "http_status_code": 500
+    }
+  ],
+  "score_results": [
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "socket_connect"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level1_TCPServer"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "socket_connect",
+        "xor_decode"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level2_XorEncodedStrings"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "delay_execution",
+        "dup2_redirect",
+        "env_check",
+        "execve_shell",
+        "fork_background",
+        "ptrace_anti_debug",
+        "socket_connect"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level3_anti-debugging_reverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "dynamic_memory_exec",
+        "nop_sled",
+        "polymorphic_shellcode",
+        "socket_syscall"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.4,
+      "final_score": 0.4,
+      "sample": "level4_polymorphicReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "multistage_payload",
+        "recv_key",
+        "shellcode_exec",
+        "socket_connect",
+        "xor_decode"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level5_MultistageReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "command_in_icmp_data",
+        "crafted_icmp_packets",
+        "icmp_covert_channel",
+        "raw_socket"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level6_ICMP_CovertChannelShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "command_exec_popen",
+        "dns_beacon",
+        "dns_exfiltration",
+        "dns_tunneling",
+        "hex_encode"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level7_DNS_TunnelReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "fork_exec",
+        "process_hollowing",
+        "ptrace_inject",
+        "register_manipulation",
+        "shellcode_injection"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level8_Process_hollowing_reverse_shell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "constructor_attribute",
+        "dlsym_hijack",
+        "dup2_redirect",
+        "env_check",
+        "execve_shell",
+        "function_hooking",
+        "shared_object_injection"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level9_SharedObjectInjectionReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 1.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "anti_analysis",
+        "env_check",
+        "inline_asm_syscall",
+        "mmap_exec",
+        "runtime_decrypt",
+        "xor_encrypt"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.4,
+      "final_score": 0.4,
+      "sample": "level10_fully_obfuscated_AES_Encrypted_Shell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "denial_of_service",
+        "dup2_redirect",
+        "execve_shell",
+        "fork_bomb",
+        "fork_exec",
+        "socket_connect"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level11_ForkBombReverseShell"
+    },
+    {
+      "tier": "standard",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "techniques": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "dup2_redirect",
+        "execve_shell",
+        "jit_compilation",
+        "mmap_exec",
+        "runtime_patching",
+        "self_modifying_code",
+        "socket_connect"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level12_JIT_Compiled_Shellcode"
+    },
+    {
+      "tier": "bonus",
+      "field_scores": {
+        "decoded_c2": 0.0,
+        "encryption_algorithm": 0.0,
+        "encryption_key": 0.0,
+        "encryption_key_storage": 0.0,
+        "techniques": 0.0,
+        "decoded_strings": 0.0,
+        "anti_analysis": 0.0,
+        "file_type": 0.0,
+        "encoded_strings": 0.0,
+        "c2_protocol": 0.0
+      },
+      "hallucinated_techniques": [],
+      "missing_techniques": [
+        "anti_debug_proc_status",
+        "anti_debug_ptrace",
+        "anti_debug_timing",
+        "control_flow_flattening",
+        "curl_download",
+        "dead_code_paths",
+        "encrypted_string_table",
+        "fork_exec",
+        "indirect_syscall",
+        "infection_marker_check",
+        "key_derivation_xor_mask",
+        "metamorphic_nop_equivalent",
+        "opaque_predicates",
+        "os_fingerprint",
+        "process_hiding",
+        "rc4_encryption",
+        "self_modifying_code",
+        "system_exec"
+      ],
+      "hallucination_penalty": 0.0,
+      "weighted_score": 0.0,
+      "final_score": 0.0,
+      "sample": "level13_MetamorphicDropper"
+    }
+  ]
+}

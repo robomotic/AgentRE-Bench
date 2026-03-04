@@ -1,0 +1,16 @@
+{
+  "c2_protocol": "ICMP",
+  "decoded_c2": "192.168.1.100",
+  "decoded_strings": {
+    "0x477010": "192.168.1.100",
+    "payload": "whoami"
+  },
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_raw",
+    "icmp_covert_channel",
+    "sendto",
+    "icmp_echo_request"
+  ]
+}

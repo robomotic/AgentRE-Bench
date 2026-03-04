@@ -1,0 +1,17 @@
+{
+  "c2_protocol": "ICMP",
+  "decoded_c2": "192.168.1.100",
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "raw_socket_creation",
+    "icmp_echo_request",
+    "icmp_covert_channel",
+    "checksum_calculation",
+    "pid_embedding",
+    "data_exfiltration",
+    "infinite_beacon_loop",
+    "sleep_evasion",
+    "sendto_syscall"
+  ]
+}

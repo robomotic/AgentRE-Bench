@@ -1,0 +1,27 @@
+{
+  "anti_analysis": [
+    "encrypted_stage2_payload"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "decoded_strings": {
+    "c2_ip": "192.168.1.100",
+    "c2_port": "4444",
+    "encrypted_stage2_address": "0x4a40e0",
+    "encrypted_stage2_length": "87 bytes (0x57)"
+  },
+  "encoded_strings": true,
+  "encryption_details": {
+    "algorithm": "single-byte XOR",
+    "key": "received from C2 server (1 byte)",
+    "key_storage": "received at runtime via recv() from C2 server"
+  },
+  "file_type": "ELF64",
+  "techniques": [
+    "socket_connect",
+    "xor_encoding",
+    "multi_stage_payload",
+    "recv_key_from_server",
+    "dynamic_code_execution"
+  ]
+}

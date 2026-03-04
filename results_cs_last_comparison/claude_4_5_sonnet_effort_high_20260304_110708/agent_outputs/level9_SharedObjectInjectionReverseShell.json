@@ -1,0 +1,19 @@
+{
+  "anti_analysis": [
+    "LD_AUDIT environment check",
+    "LD_PRELOAD environment check"
+  ],
+  "c2_protocol": "TCP",
+  "decoded_c2": "192.168.1.100:4444",
+  "encoded_strings": false,
+  "file_type": "ELF64",
+  "techniques": [
+    "shared_object_injection",
+    "function_hooking_puts",
+    "socket_connect",
+    "dup2_fd_redirection",
+    "execve_shell",
+    "dlsym_resolution",
+    "environment_variable_check"
+  ]
+}
