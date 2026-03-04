@@ -169,7 +169,7 @@ class ChartRenderer {
     this.charts.set(canvasId, chart);
   }
 
-  renderTaskProgression(canvasId, modelLabel) {
+  renderTaskProgression(canvasId, modelLabel, chartType = 'line') {
     this.destroy(canvasId);
 
     const ctx = document.getElementById(canvasId);
@@ -182,19 +182,19 @@ class ChartRenderer {
     });
 
     const chart = new Chart(ctx, {
-      type: 'line',
+      type: chartType,
       data: {
         labels: levels.map(l => `L${l}`),
         datasets: [{
           label: 'Score',
           data: tasks.map(t => t.score),
           borderColor: '#00d4aa',
-          backgroundColor: 'rgba(0, 212, 170, 0.1)',
+          backgroundColor: chartType === 'bar' ? '#00d4aa' : 'rgba(0, 212, 170, 0.1)',
           borderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6,
+          pointRadius: chartType === 'line' ? 4 : 0,
+          pointHoverRadius: chartType === 'line' ? 6 : 0,
           tension: 0.2,
-          fill: true
+          fill: chartType === 'line'
         }]
       },
       options: {
@@ -235,7 +235,7 @@ class ChartRenderer {
     this.charts.set(canvasId, chart);
   }
 
-  renderTaskProgressionComparison(canvasId, models, currentModelIndex) {
+  renderTaskProgressionComparison(canvasId, models, currentModelIndex, chartType = 'line') {
     this.destroy(canvasId);
 
     const ctx = document.getElementById(canvasId);
@@ -256,12 +256,12 @@ class ChartRenderer {
         label: model.label,
         data: tasks.map(t => t.score),
         borderColor: color,
-        backgroundColor: color + (isCurrent ? '30' : '10'),
-        borderWidth: isCurrent ? 3 : 2,
-        pointRadius: isCurrent ? 4 : 3,
-        pointHoverRadius: isCurrent ? 6 : 5,
+        backgroundColor: chartType === 'bar' ? color : (color + (isCurrent ? '30' : '10')),
+        borderWidth: chartType === 'line' ? (isCurrent ? 3 : 2) : 0,
+        pointRadius: chartType === 'line' ? (isCurrent ? 4 : 3) : 0,
+        pointHoverRadius: chartType === 'line' ? (isCurrent ? 6 : 5) : 0,
         tension: 0.2,
-        fill: isCurrent,
+        fill: chartType === 'line' && isCurrent,
         order: isCurrent ? 0 : 1  // Current model on top
       };
     });
@@ -275,7 +275,7 @@ class ChartRenderer {
     const labels = Array.from({ length: maxTasks }, (_, i) => `L${i + 1}`);
 
     const chart = new Chart(ctx, {
-      type: 'line',
+      type: chartType,
       data: {
         labels: labels,
         datasets: datasets
@@ -425,39 +425,72 @@ class ChartRenderer {
     const outputPerTurn = tokenData.output_tokens_per_turn;
     const cumulative = tokenData.cumulative_tokens;
 
+    // Check if there's a context overflow error
+    const hasContextOverflow = task.error_occurred &&
+                                task.error_type === 'context_overflow' &&
+                                task.error_message;
+    let errorTokenCount = null;
+
+    if (hasContextOverflow) {
+      // Extract token count from error message like "Context overflow: 217154 tokens"
+      const match = task.error_message.match(/(\d+)\s+tokens/);
+      if (match) {
+        errorTokenCount = parseInt(match[1]);
+      }
+    }
+
+    // Build datasets
+    const datasets = [
+      {
+        label: 'Input Tokens',
+        data: inputPerTurn,
+        backgroundColor: '#6366f1',  // Indigo
+        stack: 'tokens',
+        order: 2
+      },
+      {
+        label: 'Output Tokens',
+        data: outputPerTurn,
+        backgroundColor: '#00d4aa',  // Teal (accent)
+        stack: 'tokens',
+        order: 2
+      },
+      {
+        label: 'Cumulative Total',
+        data: cumulative,
+        type: 'line',  // Line chart overlaid on bars
+        borderColor: '#f59e0b',  // Orange
+        backgroundColor: 'transparent',
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        tension: 0.2,
+        order: 1,  // Render on top
+        yAxisID: 'y-cumulative'
+      }
+    ];
+
+    // Add error point if context overflow occurred
+    if (errorTokenCount) {
+      datasets.push({
+        label: 'Context Overflow',
+        data: [...Array(turns.length).fill(null), errorTokenCount],
+        type: 'scatter',
+        backgroundColor: '#ef4444',  // Red
+        borderColor: '#ef4444',
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointStyle: 'triangle',
+        order: 0,  // Render on top
+        yAxisID: 'y-cumulative'
+      });
+    }
+
     const chart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: turns.map(t => `Turn ${t}`),
-        datasets: [
-          {
-            label: 'Input Tokens',
-            data: inputPerTurn,
-            backgroundColor: '#6366f1',  // Indigo
-            stack: 'tokens',
-            order: 2
-          },
-          {
-            label: 'Output Tokens',
-            data: outputPerTurn,
-            backgroundColor: '#00d4aa',  // Teal (accent)
-            stack: 'tokens',
-            order: 2
-          },
-          {
-            label: 'Cumulative Total',
-            data: cumulative,
-            type: 'line',  // Line chart overlaid on bars
-            borderColor: '#f59e0b',  // Orange
-            backgroundColor: 'transparent',
-            borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            tension: 0.2,
-            order: 1,  // Render on top
-            yAxisID: 'y-cumulative'
-          }
-        ]
+        labels: [...turns.map(t => `Turn ${t}`), ...(errorTokenCount ? ['Failed'] : [])],
+        datasets: datasets
       },
       options: {
         responsive: true,
@@ -473,7 +506,11 @@ class ChartRenderer {
               color: '#e0e0e8',
               padding: 8,
               font: { size: 10 },
-              usePointStyle: true
+              usePointStyle: true,
+              filter: function(item) {
+                // Hide the Context Overflow from legend if there's no error
+                return item.text !== 'Context Overflow' || errorTokenCount !== null;
+              }
             }
           },
           tooltip: {
@@ -483,9 +520,25 @@ class ChartRenderer {
             borderColor: '#1e1e2a',
             borderWidth: 1,
             callbacks: {
+              title: (items) => {
+                const item = items[0];
+                if (item.dataset.label === 'Context Overflow') {
+                  return 'Turn ' + (turns.length + 1) + ' (Failed)';
+                }
+                return item.label;
+              },
+              label: (context) => {
+                if (context.dataset.label === 'Context Overflow') {
+                  return `Context would overflow at ${context.parsed.y.toLocaleString()} tokens`;
+                }
+                return context.dataset.label + ': ' + Math.round(context.parsed.y).toLocaleString() + ' tokens';
+              },
               footer: (items) => {
                 const turnIndex = items[0].dataIndex;
-                return `Cumulative: ${Math.round(cumulative[turnIndex])} tokens`;
+                if (turnIndex >= cumulative.length) {
+                  return 'Error occurred before this turn completed';
+                }
+                return `Cumulative: ${Math.round(cumulative[turnIndex]).toLocaleString()} tokens`;
               }
             }
           }
@@ -751,10 +804,21 @@ class ModelDetailView {
         <div class="chart-container">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <h2 class="chart-title" style="margin-bottom: 0;">Task Progression (Levels 1-13)</h2>
-            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
-              <input type="checkbox" id="compare-models-toggle" style="cursor: pointer;">
-              <span style="font-size: 0.9rem; color: var(--text-dim);">Compare with other models</span>
-            </label>
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px; padding: 4px 12px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px;">
+                <span style="font-size: 0.85rem; color: var(--text-dim);">Chart type:</span>
+                <button id="chart-type-line" class="chart-type-btn active" data-type="line" style="padding: 4px 12px; background: var(--accent); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: all 0.2s;">
+                  Line
+                </button>
+                <button id="chart-type-bar" class="chart-type-btn" data-type="bar" style="padding: 4px 12px; background: transparent; color: var(--text-dim); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;">
+                  Bar
+                </button>
+              </div>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="compare-models-toggle" style="cursor: pointer;">
+                <span style="font-size: 0.9rem; color: var(--text-dim);">Compare with other models</span>
+              </label>
+            </div>
           </div>
           <div id="comparison-hint" style="display: none; margin-bottom: 12px; padding: 8px 12px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; color: var(--text-dim);">
             💡 Click on legend items to show/hide individual models
@@ -928,7 +992,7 @@ class ModelDetailView {
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
               <h4 style="margin: 0; color: var(--text);">Cumulative Token Usage</h4>
               <span style="font-size: 0.75rem; color: var(--text-dim);">
-                ${task.tool_calls_total} turns • ${task.total_tokens} total tokens
+                ${task.token_breakdown.turns.length} turns • ${task.tool_calls_total} tool calls • ${task.total_tokens} total tokens
               </span>
             </div>
             <div class="expanded-chart-container" style="height: 250px;">
@@ -950,23 +1014,78 @@ class ModelDetailView {
     const model = dataset.getModels()[modelId];
     if (!model) return;
 
+    let currentChartType = 'line';  // Track current chart type
+
     // Initial render with single model
-    chartRenderer.renderTaskProgression('task-progression-chart', model.label);
+    chartRenderer.renderTaskProgression('task-progression-chart', model.label, currentChartType);
     chartRenderer.renderToolUsage('tool-usage-chart', model.aggregate_metrics.tool_usage_distribution);
 
-    // Add toggle handler for comparison mode
+    // Add chart type toggle handlers
+    const lineBtn = document.getElementById('chart-type-line');
+    const barBtn = document.getElementById('chart-type-bar');
     const toggle = document.getElementById('compare-models-toggle');
     const hint = document.getElementById('comparison-hint');
+
+    const updateChartTypeButtons = (type) => {
+      currentChartType = type;
+      if (lineBtn && barBtn) {
+        if (type === 'line') {
+          lineBtn.classList.add('active');
+          lineBtn.style.background = 'var(--accent)';
+          lineBtn.style.color = 'var(--bg)';
+          lineBtn.style.border = 'none';
+          barBtn.classList.remove('active');
+          barBtn.style.background = 'transparent';
+          barBtn.style.color = 'var(--text-dim)';
+          barBtn.style.border = '1px solid var(--border)';
+        } else {
+          barBtn.classList.add('active');
+          barBtn.style.background = 'var(--accent)';
+          barBtn.style.color = 'var(--bg)';
+          barBtn.style.border = 'none';
+          lineBtn.classList.remove('active');
+          lineBtn.style.background = 'transparent';
+          lineBtn.style.color = 'var(--text-dim)';
+          lineBtn.style.border = '1px solid var(--border)';
+        }
+      }
+    };
+
+    if (lineBtn) {
+      lineBtn.addEventListener('click', () => {
+        updateChartTypeButtons('line');
+        if (toggle && toggle.checked) {
+          const allModels = dataset.getModels();
+          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId), 'line');
+        } else {
+          chartRenderer.renderTaskProgression('task-progression-chart', model.label, 'line');
+        }
+      });
+    }
+
+    if (barBtn) {
+      barBtn.addEventListener('click', () => {
+        updateChartTypeButtons('bar');
+        if (toggle && toggle.checked) {
+          const allModels = dataset.getModels();
+          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId), 'bar');
+        } else {
+          chartRenderer.renderTaskProgression('task-progression-chart', model.label, 'bar');
+        }
+      });
+    }
+
+    // Add toggle handler for comparison mode
     if (toggle) {
       toggle.addEventListener('change', (e) => {
         if (e.target.checked) {
           // Render comparison mode with all models
           const allModels = dataset.getModels();
-          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId));
+          chartRenderer.renderTaskProgressionComparison('task-progression-chart', allModels, parseInt(modelId), currentChartType);
           if (hint) hint.style.display = 'block';
         } else {
           // Render single model mode
-          chartRenderer.renderTaskProgression('task-progression-chart', model.label);
+          chartRenderer.renderTaskProgression('task-progression-chart', model.label, currentChartType);
           if (hint) hint.style.display = 'none';
         }
       });
