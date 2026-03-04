@@ -67,14 +67,187 @@ def extract_model_label(dir_name: str) -> str:
     return label_parts[0]
 
 
+def estimate_tokens_from_content(content) -> int:
+    """
+    Estimate token count from message content.
+    Uses ~4 characters per token heuristic.
+    """
+    if isinstance(content, str):
+        return len(content) // 4
+    elif isinstance(content, list):
+        total_chars = 0
+        for item in content:
+            if isinstance(item, dict):
+                # Handle tool_use, tool_result, text blocks
+                if 'text' in item:
+                    total_chars += len(item['text'])
+                if 'content' in item:
+                    if isinstance(item['content'], str):
+                        total_chars += len(item['content'])
+                if 'input' in item:
+                    # Tool input parameters
+                    total_chars += len(json.dumps(item['input']))
+            elif isinstance(item, str):
+                total_chars += len(item)
+        return total_chars // 4
+    return 0
+
+
+def calculate_cumulative_tokens_from_transcript(
+    full_transcript_path: Path,
+    total_tokens: int
+) -> Dict[str, List]:
+    """
+    Calculate cumulative token usage by analyzing full transcript.
+    Uses actual per-turn data if available, otherwise falls back to estimation.
+
+    Returns:
+        {
+          'turns': [1, 2, 3, ...],
+          'cumulative_tokens': [394, 789, 1184, ...],
+          'input_tokens_per_turn': [209, 210, 185, ...],
+          'output_tokens_per_turn': [185, 184, 200, ...]
+        }
+    """
+    if not full_transcript_path.exists():
+        return None
+
+    try:
+        with open(full_transcript_path) as f:
+            data = json.load(f)
+    except Exception as e:
+        print(f"    Warning: Failed to load full transcript {full_transcript_path.name}: {e}")
+        return None
+
+    # Check if actual per-turn token data exists (new format)
+    if isinstance(data, dict) and "per_turn_tokens" in data:
+        per_turn_tokens = data["per_turn_tokens"]
+
+        if not per_turn_tokens:
+            return None
+
+        return {
+            'turns': [t["turn"] for t in per_turn_tokens],
+            'cumulative_tokens': [t["cumulative_tokens"] for t in per_turn_tokens],
+            'input_tokens_per_turn': [t["input_tokens"] for t in per_turn_tokens],
+            'output_tokens_per_turn': [t["output_tokens"] for t in per_turn_tokens],
+        }
+
+    # Fallback: Estimate from messages (for backward compatibility with old format)
+    messages = data if isinstance(data, list) else data.get("messages", [])
+
+    # Calculate estimated tokens per message
+    message_token_estimates = []
+    cumulative_context = []
+    cumulative = 0
+
+    for msg in messages:
+        tokens = estimate_tokens_from_content(msg.get('content', ''))
+        message_token_estimates.append(tokens)
+        cumulative += tokens
+        cumulative_context.append(cumulative)
+
+    # Total estimated tokens
+    total_estimated = sum(message_token_estimates)
+
+    # Normalize to actual total (scale factor)
+    if total_estimated > 0:
+        scale_factor = total_tokens / total_estimated
+        cumulative_context = [int(c * scale_factor) for c in cumulative_context]
+        message_token_estimates = [int(t * scale_factor) for t in message_token_estimates]
+
+    # Group messages by turn (assistant messages represent turns)
+    # Turn structure: user (system prompt) → assistant (reasoning + tool calls) → user (tool results) → ...
+    turns = []
+    input_per_turn = []
+    output_per_turn = []
+    cumulative_per_turn = []
+
+    turn_num = 0
+    i = 0
+    while i < len(messages):
+        if messages[i]['role'] == 'user' and i == 0:
+            # Initial system prompt (turn 0, not counted as a turn)
+            i += 1
+            continue
+
+        if messages[i]['role'] == 'assistant':
+            turn_num += 1
+            turns.append(turn_num)
+
+            # Assistant message = output tokens
+            output_tokens = message_token_estimates[i]
+            output_per_turn.append(output_tokens)
+
+            # Next user message (tool results) = input tokens
+            input_tokens = 0
+            if i + 1 < len(messages) and messages[i + 1]['role'] == 'user':
+                input_tokens = message_token_estimates[i + 1]
+                i += 1  # Skip the user message we just counted
+
+            input_per_turn.append(input_tokens)
+
+            # Cumulative at end of this turn
+            cumulative_per_turn.append(cumulative_context[i])
+
+            i += 1
+        else:
+            i += 1
+
+    return {
+        'turns': turns,
+        'cumulative_tokens': cumulative_per_turn,
+        'input_tokens_per_turn': input_per_turn,
+        'output_tokens_per_turn': output_per_turn
+    }
+
+
+def load_full_transcript(results_dir: Path, task_id: str) -> Path:
+    """Get path to full transcript file."""
+    return results_dir / "transcripts" / f"{task_id}_full_transcript.json"
+
+
+def enrich_task_metrics_with_token_data(report_path: Path, report: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Enrich task_metrics with per-turn token data from full transcript files.
+    """
+    results_dir = report_path.parent
+
+    for task_metric in report.get('task_metrics', []):
+        task_id = task_metric.get('task_id')
+        if not task_id:
+            continue
+
+        total_tokens = task_metric.get('total_tokens', 0)
+        if total_tokens == 0:
+            continue
+
+        # Load full transcript
+        full_transcript_path = load_full_transcript(results_dir, task_id)
+
+        # Calculate cumulative tokens
+        token_data = calculate_cumulative_tokens_from_transcript(
+            full_transcript_path,
+            total_tokens
+        )
+
+        if token_data:
+            task_metric['token_breakdown'] = token_data
+
+    return report
+
+
 def load_benchmark_report(path: Path) -> Dict[str, Any]:
-    """Load a single benchmark report and add metadata."""
+    """Load a single benchmark report and add metadata + token breakdown."""
     with open(path) as f:
         data = json.load(f)
 
     # Add label extracted from directory name
     dir_name = path.parent.name
     data['label'] = extract_model_label(dir_name)
+
+    # Enrich with per-turn token data from full transcripts
+    data = enrich_task_metrics_with_token_data(path, data)
 
     return data
 

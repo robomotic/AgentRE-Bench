@@ -42,6 +42,7 @@ class AgentLoop:
         self.tool_calls_log: list[dict] = []
         self.input_tokens = 0
         self.output_tokens = 0
+        self.per_turn_tokens: list[dict] = []  # Per-turn token tracking
         self.invalid_tool_calls = 0
         self.invalid_json_attempts = 0
 
@@ -175,6 +176,16 @@ class AgentLoop:
 
             self.input_tokens += response.input_tokens
             self.output_tokens += response.output_tokens
+
+            # Store per-turn token breakdown
+            turn_number = len([m for m in self.messages if m['role'] == 'assistant'])
+            self.per_turn_tokens.append({
+                "turn": turn_number,
+                "input_tokens": response.input_tokens,
+                "output_tokens": response.output_tokens,
+                "total_tokens": response.input_tokens + response.output_tokens,
+                "cumulative_tokens": self.input_tokens + self.output_tokens,
+            })
 
             if response.stop_reason == "tool_use" and response.tool_calls:
                 # Show agent reasoning (verbose only)
@@ -414,6 +425,7 @@ class AgentLoop:
             "input_tokens": self.input_tokens,
             "output_tokens": self.output_tokens,
             "total_tokens": self.input_tokens + self.output_tokens,
+            "per_turn_tokens": self.per_turn_tokens,  # Per-turn token data
             "wall_time_seconds": round(wall_time, 2),
             "max_steps_hit": max_steps_hit,
             "has_valid_answer": final_answer is not None,

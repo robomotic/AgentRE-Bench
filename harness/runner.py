@@ -218,10 +218,14 @@ def run_single_task(
     with open(transcript_path, "w") as f:
         json.dump(transcript_data, f, indent=2, default=str)
 
-    # Save full transcript separately
+    # Save full transcript separately (with per-turn token metadata)
     full_transcript_path = config.transcripts_dir / f"{task.task_id}_full_transcript.json"
+    transcript_with_metadata = {
+        "messages": agent_result.get("transcript", []),
+        "per_turn_tokens": agent_result.get("per_turn_tokens", []),
+    }
     with open(full_transcript_path, "w") as f:
-        json.dump(agent_result.get("transcript", []), f, indent=2, default=str)
+        json.dump(transcript_with_metadata, f, indent=2, default=str)
 
     return metrics, score_result
 

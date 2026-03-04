@@ -407,6 +407,130 @@ class ChartRenderer {
     this.charts.set(canvasId, chart);
   }
 
+  renderCumulativeTokens(canvasId, task) {
+    this.destroy(canvasId);
+
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+
+    // Get token breakdown data
+    const tokenData = task.token_breakdown;
+    if (!tokenData || !tokenData.turns || tokenData.turns.length === 0) {
+      console.warn('No token breakdown data available for task:', task.task_id);
+      return;
+    }
+
+    const turns = tokenData.turns;
+    const inputPerTurn = tokenData.input_tokens_per_turn;
+    const outputPerTurn = tokenData.output_tokens_per_turn;
+    const cumulative = tokenData.cumulative_tokens;
+
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: turns.map(t => `Turn ${t}`),
+        datasets: [
+          {
+            label: 'Input Tokens',
+            data: inputPerTurn,
+            backgroundColor: '#6366f1',  // Indigo
+            stack: 'tokens',
+            order: 2
+          },
+          {
+            label: 'Output Tokens',
+            data: outputPerTurn,
+            backgroundColor: '#00d4aa',  // Teal (accent)
+            stack: 'tokens',
+            order: 2
+          },
+          {
+            label: 'Cumulative Total',
+            data: cumulative,
+            type: 'line',  // Line chart overlaid on bars
+            borderColor: '#f59e0b',  // Orange
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            tension: 0.2,
+            order: 1,  // Render on top
+            yAxisID: 'y-cumulative'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              color: '#e0e0e8',
+              padding: 8,
+              font: { size: 10 },
+              usePointStyle: true
+            }
+          },
+          tooltip: {
+            backgroundColor: '#111119',
+            titleColor: '#e0e0e8',
+            bodyColor: '#e0e0e8',
+            borderColor: '#1e1e2a',
+            borderWidth: 1,
+            callbacks: {
+              footer: (items) => {
+                const turnIndex = items[0].dataIndex;
+                return `Cumulative: ${Math.round(cumulative[turnIndex])} tokens`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            grid: { display: false },
+            ticks: {
+              color: '#8888a0',
+              maxRotation: 45,
+              minRotation: 0,
+              font: { size: 9 }
+            }
+          },
+          y: {
+            stacked: true,
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Tokens per Turn',
+              color: '#8888a0',
+              font: { size: 11 }
+            },
+            grid: { color: '#1e1e2a' },
+            ticks: { color: '#8888a0' }
+          },
+          'y-cumulative': {
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Cumulative Total',
+              color: '#f59e0b',
+              font: { size: 11 }
+            },
+            grid: { display: false },
+            ticks: { color: '#8888a0' }
+          }
+        }
+      }
+    });
+
+    this.charts.set(canvasId, chart);
+  }
+
   renderMultiModelComparison(canvasId, models) {
     this.destroy(canvasId);
 
@@ -783,12 +907,36 @@ class ModelDetailView {
       </div>
     `).join('');
 
+    // Generate unique chart ID
+    const chartId = `token-chart-${task.task_id}`;
+
+    // Check if token breakdown data exists
+    const hasTokenData = task.token_breakdown &&
+                         task.token_breakdown.turns &&
+                         task.token_breakdown.turns.length > 0;
+
     return `
       <div class="expanded-content">
         <h4 style="margin-bottom: 12px; color: var(--text);">Field Scores</h4>
         <div class="field-scores">
           ${fieldScores}
         </div>
+
+        ${hasTokenData ? `
+          <!-- Token Usage Chart -->
+          <div style="margin-top: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 style="margin: 0; color: var(--text);">Cumulative Token Usage</h4>
+              <span style="font-size: 0.75rem; color: var(--text-dim);">
+                ${task.tool_calls_total} turns • ${task.total_tokens} total tokens
+              </span>
+            </div>
+            <div class="expanded-chart-container" style="height: 250px;">
+              <canvas id="${chartId}"></canvas>
+            </div>
+          </div>
+        ` : ''}
+
         ${task.error_occurred ? `
           <div style="margin-top: 16px; padding: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid var(--red); border-radius: 6px; color: var(--text-dim); font-size: 0.85rem;">
             <strong style="color: var(--red);">Error:</strong> ${task.error_message || 'Unknown error'}
@@ -827,10 +975,29 @@ class ModelDetailView {
     // Add click handlers for expandable rows
     document.querySelectorAll('.task-table .expandable').forEach(row => {
       row.addEventListener('click', () => {
-        const index = row.dataset.taskIndex;
-        const expandedRow = document.getElementById(`expanded-${index}`);
+        const taskIndex = row.dataset.taskIndex;
+        const expandedRow = document.getElementById(`expanded-${taskIndex}`);
         const isVisible = expandedRow.style.display !== 'none';
-        expandedRow.style.display = isVisible ? 'none' : 'table-row';
+
+        if (!isVisible) {
+          // Row is being opened - show and render chart
+          expandedRow.style.display = 'table-row';
+
+          const task = model.task_metrics[taskIndex];
+
+          // Render token chart if data available
+          if (task.token_breakdown) {
+            const chartId = `token-chart-${task.task_id}`;
+            setTimeout(() => {
+              chartRenderer.renderCumulativeTokens(chartId, task);
+            }, 50);
+          }
+        } else {
+          // Row is being closed - hide and destroy chart
+          expandedRow.style.display = 'none';
+          const task = model.task_metrics[taskIndex];
+          chartRenderer.destroy(`token-chart-${task.task_id}`);
+        }
       });
     });
   }
