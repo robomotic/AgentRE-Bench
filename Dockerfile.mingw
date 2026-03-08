@@ -1,0 +1,20 @@
+FROM --platform=linux/amd64 ubuntu:22.04
+
+# Avoid interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mingw-w64 \
+    mingw-w64-tools \
+    gcc \
+    make \
+    file \
+    binutils-mingw-w64 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+# Volumes for source and output directories
+VOLUME ["/workspace/samples_windows", "/workspace/binaries_windows"]
+
+CMD ["/bin/bash"]

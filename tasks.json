@@ -90,6 +90,46 @@
       "binary_name": "level13_MetamorphicDropper",
       "ground_truth": "ground_truths/level13_MetamorphicDropper.json",
       "difficulty": 13
+    },
+    {
+      "task_id": "level1_TCPServer_windows",
+      "source_file": "samples_windows/level1_TCPServer.c",
+      "binary_name": "level1_TCPServer.exe",
+      "ground_truth": "ground_truths_windows/level1_TCPServer.json",
+      "difficulty": 1,
+      "platform": "windows"
+    },
+    {
+      "task_id": "level2_XorEncodedStrings_windows",
+      "source_file": "samples_windows/level2_XorEncodedStrings.c",
+      "binary_name": "level2_XorEncodedStrings.exe",
+      "ground_truth": "ground_truths_windows/level2_XorEncodedStrings.json",
+      "difficulty": 2,
+      "platform": "windows"
+    },
+    {
+      "task_id": "level4_polymorphicReverseShell_windows",
+      "source_file": "samples_windows/level4_polymorphicReverseShell.c",
+      "binary_name": "level4_polymorphicReverseShell.exe",
+      "ground_truth": "ground_truths_windows/level4_polymorphicReverseShell.json",
+      "difficulty": 4,
+      "platform": "windows"
+    },
+    {
+      "task_id": "level7_DNS_TunnelReverseShell_windows",
+      "source_file": "samples_windows/level7_DNS_TunnelReverseShell.c",
+      "binary_name": "level7_DNS_TunnelReverseShell.exe",
+      "ground_truth": "ground_truths_windows/level7_DNS_TunnelReverseShell.json",
+      "difficulty": 7,
+      "platform": "windows"
+    },
+    {
+      "task_id": "level11_ForkBombReverseShell_windows",
+      "source_file": "samples_windows/level11_ForkBombReverseShell.c",
+      "binary_name": "level11_ForkBombReverseShell.exe",
+      "ground_truth": "ground_truths_windows/level11_ForkBombReverseShell.json",
+      "difficulty": 11,
+      "platform": "windows"
     }
   ]
 }

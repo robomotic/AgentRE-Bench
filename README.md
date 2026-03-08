@@ -2,7 +2,7 @@
 
 A benchmark for evaluating LLM agents on **long-horizon reverse engineering tasks** with deterministic scoring.
 
-> **Platform:** Linux/Unix (ELF x86-64). **Partial macOS support** (9/13 MACH-O binaries - see [MACHO_BUILD_NOTES.md](MACHO_BUILD_NOTES.md)). Windows PE support planned for future release.
+> **Platform:** Linux/Unix (ELF x86-64). **Partial macOS support** (9/13 MACH-O binaries - see [MACHO_BUILD_NOTES.md](MACHO_BUILD_NOTES.md)). **Partial Windows support (MVP)** (5/13 PE32+ binaries - see [WINDOWS_BUILD_NOTES.md](WINDOWS_BUILD_NOTES.md)).
 
 AgentRE-Bench gives an LLM agent a compiled ELF binary and a set of Linux static analysis tools (strings, objdump, readelf, etc.), then measures how well it can identify C2 infrastructure, encoding schemes, anti-analysis techniques, and communication protocols — all without human guidance.
 
@@ -238,6 +238,8 @@ cp .env.example .env
 
 ### 2. Build Binaries
 
+#### ELF Binaries (Linux)
+
 ```bash
 chmod +x build_binaries.sh
 ./build_binaries.sh
@@ -245,6 +247,33 @@ chmod +x build_binaries.sh
 
 On **Linux x86-64**: uses local gcc directly (install with `apt install gcc` if needed — no Docker required).
 On **macOS / Apple Silicon**: uses Docker with `--platform linux/amd64` to cross-compile.
+
+#### PE Binaries (Windows) - **MVP (5 samples)**
+
+Requires Rust toolchain (rustc 1.70+) and either:
+- **Native**: MinGW-w64 installed (`x86_64-w64-mingw32-gcc` in PATH)
+- **Docker**: Docker Desktop with linux/amd64 support
+
+```bash
+# Install Rust (if needed)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Build Docker image for cross-compilation
+docker build --platform linux/amd64 -t agentre-bench-mingw:latest -f Dockerfile.mingw .
+
+# Compile Windows PE binaries (auto-detects MinGW or uses Docker)
+cargo run --bin build_binaries_windows
+
+# Force Docker mode (if MinGW not installed)
+cargo run --bin build_binaries_windows -- --docker-only
+
+# Verbose mode (show compilation commands)
+cargo run --bin build_binaries_windows -- --verbose
+
+# Output: binaries_windows/*.exe (5 PE32+ executables)
+```
+
+**MVP includes:** Levels 1, 2, 4, 7, 11 (see [WINDOWS_BUILD_NOTES.md](WINDOWS_BUILD_NOTES.md) for porting details)
 
 ### 3. Build Tools Image
 

@@ -1,0 +1,22 @@
+{
+  "sample": "level2_XorEncodedStrings",
+  "file_type": "PE32+",
+  "encoded_strings": true,
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_ip": "192.168.1.100",
+  "c2_port": 4444,
+  "c2_protocol": "TCP",
+  "techniques": [
+    "xor_decode",
+    "winsock2_socket",
+    "createprocess_spawn",
+    "handle_redirect",
+    "cmd_shell"
+  ],
+  "encryption_key": "0x22",
+  "encryption_type": "xor_single_byte",
+  "shell_path": "C:\\Windows\\System32\\cmd.exe",
+  "confidence": 0.95,
+  "difficulty": 2,
+  "description": "TCP reverse shell with XOR-encoded strings (Windows). Host, port, and shell path are XOR'd with single-byte key 0x22. Decodes at runtime before connecting via WinSock2 and spawning cmd.exe."
+}

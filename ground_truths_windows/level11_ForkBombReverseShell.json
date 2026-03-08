@@ -1,0 +1,28 @@
+{
+  "sample": "level11_ForkBombReverseShell",
+  "file_type": "PE32+",
+  "encoded_strings": false,
+  "decoded_c2": "192.168.1.100:4444",
+  "c2_ip": "192.168.1.100",
+  "c2_port": 4444,
+  "c2_protocol": "TCP",
+  "techniques": [
+    "process_bomb",
+    "createprocess_recursive",
+    "createthread",
+    "winsock2_socket",
+    "handle_redirect",
+    "cmd_shell",
+    "denial_of_service"
+  ],
+  "behavior": {
+    "parent_action": "process_bomb (infinite CreateProcess loop)",
+    "child_action": "reverse_shell in separate thread",
+    "dual_purpose": true,
+    "uses_getmodulefilename": true
+  },
+  "shell_path": "C:\\Windows\\System32\\cmd.exe",
+  "confidence": 0.95,
+  "difficulty": 11,
+  "description": "Dual-purpose malware combining process bomb (DoS) with reverse shell (Windows). Creates thread for reverse shell connection to C2. Main process enters infinite CreateProcess loop spawning copies of itself via GetModuleFileName(). Designed to overwhelm system while maintaining backdoor access."
+}

@@ -1,0 +1,27 @@
+{
+  "sample": "level7_DNS_TunnelReverseShell",
+  "file_type": "PE32+",
+  "encoded_strings": true,
+  "decoded_c2": "attacker.com",
+  "c2_ip": null,
+  "c2_port": 53,
+  "c2_protocol": "DNS",
+  "techniques": [
+    "dns_tunneling",
+    "hex_encode",
+    "dns_exfiltration",
+    "command_exec_popen",
+    "dns_beacon",
+    "winsock2_socket"
+  ],
+  "dns_details": {
+    "beacon_domain": "cmd.attacker.com",
+    "exfil_format": "<hex_encoded_data>.attacker.com",
+    "encoding": "hex",
+    "beacon_interval": 5
+  },
+  "shell_path": "C:\\Windows\\System32\\cmd.exe",
+  "confidence": 0.93,
+  "difficulty": 7,
+  "description": "DNS tunneling reverse shell (Windows). Beacons via DNS queries to attacker.com using getaddrinfo(). Receives commands via DNS lookups to cmd.attacker.com. Executes commands via _popen() (Windows) and exfiltrates output as hex-encoded DNS subdomain queries."
+}

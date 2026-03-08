@@ -1,0 +1,26 @@
+{
+  "sample": "level4_polymorphicReverseShell",
+  "file_type": "PE32+",
+  "encoded_strings": false,
+  "decoded_c2": "10.0.0.5:8080",
+  "c2_ip": "10.0.0.5",
+  "c2_port": 8080,
+  "c2_protocol": "TCP",
+  "techniques": [
+    "polymorphic_shellcode",
+    "nop_sled",
+    "dynamic_memory_alloc",
+    "winsock2_socket",
+    "createprocess_spawn",
+    "handle_redirect"
+  ],
+  "shellcode_details": {
+    "nop_sled_size": "256-768 bytes (randomized)",
+    "creates_socket": true,
+    "uses_winsock": true
+  },
+  "shell_path": "C:\\Windows\\System32\\cmd.exe",
+  "confidence": 0.90,
+  "difficulty": 4,
+  "description": "Polymorphic shellcode generator (Windows). Creates randomized NOP sled (256-768 bytes) followed by x86-64 shellcode template. Connects to C2 via WinSock2 and spawns cmd.exe with redirected handles. Shellcode generated at runtime with random variation."
+}
